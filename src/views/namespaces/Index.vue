@@ -34,10 +34,18 @@
         class="col-4"
       >
         <div class="card">
-          <div class="card-body text-center">
+          <div class="card-body">
             <h4 class="card-title my-2">
               {{ namespace.metadata.name }}
             </h4>
+            <div>
+              Status:
+              <b>{{ namespace.status?.phase }}</b>
+            </div>
+            <div>
+              Tenant:
+              <b>{{ extractTenantName(namespace) }}</b>
+            </div>
           </div>
         </div>
       </div>
@@ -48,7 +56,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import { NamespaceList } from "@/types";
+import {Namespace, NamespaceList} from "@/types";
 
 type Data = {
   loadingNamespaces: boolean;
@@ -88,6 +96,9 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
         this.loadingNamespaces = false;
       }
     },
+    extractTenantName(namespace: Namespace): string|undefined {
+      return namespace.metadata.ownerReferences[0]?.name
+    }
   },
 });
 </script>

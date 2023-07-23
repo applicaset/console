@@ -1,5 +1,6 @@
 type ObjectMeta = {
   name: string;
+  ownerReferences: any[];
 };
 
 export type Namespace = {
@@ -7,6 +8,7 @@ export type Namespace = {
   kind: "Namespace";
   metadata: ObjectMeta;
   spec: object;
+  status: object;
 };
 
 export type NamespaceList = {
