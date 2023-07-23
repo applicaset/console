@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import {Namespace, NamespaceList} from "@/types";
+import { Namespace, NamespaceList } from "@/types";
 
 type Data = {
   loadingNamespaces: boolean;
@@ -96,9 +96,9 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
         this.loadingNamespaces = false;
       }
     },
-    extractTenantName(namespace: Namespace): string|undefined {
-      return namespace.metadata.ownerReferences[0]?.name
-    }
+    extractTenantName(namespace: Namespace): string | undefined {
+      return namespace.metadata.ownerReferences[0]?.name;
+    },
   },
 });
 </script>
