@@ -5,7 +5,19 @@
       <div class="col-auto">
         <div class="card">
           <div class="card-body">
-            <p>To connect to the cluster, run the command bellow:</p>
+            <p>
+              To connect to the cluster, you need to have
+              <a href="https://kubernetes.io/docs/tasks/tools/#kubectl">
+                kubectl
+              </a>
+              and
+              <a href="https://github.com/int128/kubelogin#setup">
+                oidc-login
+              </a>
+              installed.
+              <br />
+              Then run the command bellow:
+            </p>
             <highlightjs language="shell" :code="code" />
           </div>
         </div>
