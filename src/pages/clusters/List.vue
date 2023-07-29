@@ -1,11 +1,11 @@
 <template>
-  <router-view />
+  <div>Clusters List</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'App',
+  name: 'ClustersListPage',
 });
 </script>

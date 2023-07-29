@@ -1,29 +1,43 @@
-# ApplicaSet Console
+# Quasar App (quasar-project)
 
-## Project setup
+A Quasar Project
 
-```
-yarn install
-```
+## Install the dependencies
 
-### Compiles and hot-reloads for development
-
-```
-yarn serve
+```bash
+yarn
+# or
+npm install
 ```
 
-### Compiles and minifies for production
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
 
-```
-yarn build
+```bash
+quasar dev
 ```
 
-### Lints and fixes files
+### Lint the files
 
-```
+```bash
 yarn lint
+# or
+npm run lint
 ```
 
-### Customize configuration
+### Format the files
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```bash
+yarn format
+# or
+npm run format
+```
+
+### Build the app for production
+
+```bash
+quasar build
+```
+
+### Customize the configuration
+
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

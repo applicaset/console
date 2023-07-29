@@ -1,11 +1,15 @@
+type OwnerReference = {
+  name: string;
+};
+
 type ObjectMeta = {
   name: string;
-  ownerReferences: any[];
+  ownerReferences?: OwnerReference[];
 };
 
 export type Namespace = {
-  apiVersion: "v1";
-  kind: "Namespace";
+  apiVersion: 'v1';
+  kind: 'Namespace';
   metadata: ObjectMeta;
   spec: object;
   status: object;

@@ -1,69 +1,38 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import WrapperLayout from "@/components/WrapperLayout.vue";
+import { route } from 'quasar/wrappers';
+import {
+  createMemoryHistory,
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router';
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    name: "Index",
-    meta: {
-      title: "Home",
-    },
-    component: () => import("@/views/Index.vue"),
-    redirect: { name: "Namespaces" },
-    children: [
-      {
-        path: "namespaces",
-        name: "Namespaces",
-        meta: {
-          title: "Namespaces",
-        },
-        component: WrapperLayout,
-        redirect: { name: "NamespacesIndex" },
-        children: [
-          {
-            path: "",
-            name: "NamespacesIndex",
-            meta: {
-              title: "Index",
-            },
-            component: () => import("@/views/namespaces/Index.vue"),
-          },
-          {
-            path: "new",
-            name: "NamespacesNew",
-            meta: {
-              title: "New Namespace",
-            },
-            component: () => import("@/views/namespaces/New.vue"),
-          },
-          {
-            path: ":namespaceName",
-            name: "NamespacesView",
-            meta: {
-              title: "Namespace XXX",
-            },
-            component: () => import("@/views/namespaces/View.vue"),
-          },
-        ],
-      },
-    ],
-  },
-];
+import routes from './routes';
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+/*
+ * If not building with SSR mode, you can
+ * directly export the Router instantiation;
+ *
+ * The function below can be async too; either use
+ * async/await or return a Promise which resolves
+ * with the Router instance.
+ */
+
+export default route(function (/* { store, ssrContext } */) {
+  const createHistory = import.meta.env.SERVER
+    ? createMemoryHistory
+    : import.meta.env.VITE_VUE_ROUTER_MODE === 'history'
+    ? createWebHistory
+    : createWebHashHistory;
+
+  const Router = createRouter({
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes,
+
+    // Leave this as is and make changes in quasar.conf.js instead!
+    // quasar.conf.js -> build -> vueRouterMode
+    // quasar.conf.js -> build -> publicPath
+    history: createHistory(import.meta.env.VITE_VUE_ROUTER_BASE),
+  });
+
+  return Router;
 });
-
-router.beforeEach((to, from, next) => {
-  document.title = "ApplicaSet Console";
-
-  const title = to.meta?.title as string | undefined;
-  if (title) {
-    document.title = `${title} | ApplicaSet Console`;
-  }
-
-  next();
-});
-
-export default router;
