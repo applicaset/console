@@ -37,6 +37,8 @@
           :label="$t('add')"
           unelevated
           @click.prevent="onAdd"
+          :loading="checkingCanCreateNamespace"
+          :disable="!canCreateNamespace"
         />
       </template>
     </q-table>
@@ -46,13 +48,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { listNamespaces, Namespace, NamespaceList } from 'src/api/v1-core';
-import { api } from 'boot/axios';
 import { Dialog } from 'quasar';
 import AddNamespaceDialog from 'components/AddNamespaceDialog.vue';
+import { canI } from 'src/api/v1-authorization-k8s-io';
 
 type Data = {
   loadingNamespaces: boolean;
   namespaceList?: NamespaceList;
+  canCreateNamespace?: boolean;
+  checkingCanCreateNamespace: boolean;
 };
 
 export default defineComponent({
@@ -60,6 +64,8 @@ export default defineComponent({
   data: (): Data => ({
     loadingNamespaces: false,
     namespaceList: undefined,
+    canCreateNamespace: undefined,
+    checkingCanCreateNamespace: false,
   }),
   computed: {
     code() {
@@ -96,6 +102,7 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
   },
   mounted() {
     this.loadNamespaces();
+    this.checkCanCreateNamespace();
   },
   methods: {
     async loadNamespaces() {
@@ -107,6 +114,17 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
         console.error(e);
       } finally {
         this.loadingNamespaces = false;
+      }
+    },
+    async checkCanCreateNamespace() {
+      this.checkingCanCreateNamespace = true;
+
+      try {
+        this.canCreateNamespace = await canI('create', 'namespaces');
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.checkingCanCreateNamespace = false;
       }
     },
     async onAdd() {
