@@ -34,8 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Namespace } from 'src/api/types';
-import { createNamespace } from 'src/api/api';
+import { Namespace, createNamespace } from 'src/api/v1-core';
 import { Notify } from 'quasar';
 
 type Data = {

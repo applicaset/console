@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Namespace, NamespaceList } from 'src/api/types';
+import { listNamespaces, Namespace, NamespaceList } from 'src/api/v1-core';
 import { api } from 'boot/axios';
 import { Dialog } from 'quasar';
 import AddNamespaceDialog from 'components/AddNamespaceDialog.vue';
@@ -102,9 +102,7 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
       this.loadingNamespaces = true;
 
       try {
-        const res = await api.get('/api/v1/namespaces');
-
-        this.namespaceList = res.data as NamespaceList;
+        this.namespaceList = await listNamespaces();
       } catch (e) {
         console.error(e);
       } finally {
