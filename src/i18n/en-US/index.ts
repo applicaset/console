@@ -15,4 +15,7 @@ export default {
   add: 'Add',
   status: 'Status',
   tenant: 'Tenant',
+  goHome: 'Go Home',
+  page404Title: '404',
+  page404Text: 'Oops. Nothing here...',
 };

@@ -7,12 +7,18 @@ type ObjectMeta = {
   ownerReferences?: OwnerReference[];
 };
 
+type NamespaceSpec = {};
+
+type NamespaceStatus = {
+  phase: string;
+};
+
 export type Namespace = {
   apiVersion: 'v1';
   kind: 'Namespace';
   metadata: ObjectMeta;
-  spec: object;
-  status: object;
+  spec: NamespaceSpec;
+  status: NamespaceStatus;
 };
 
 export type NamespaceList = {

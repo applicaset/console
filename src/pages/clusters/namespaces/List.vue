@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-card>
+    <q-card flat bordered>
       <q-card-section>
         <p>
           To connect to the cluster, you need to have
@@ -14,11 +14,13 @@
           Then run the command bellow:
         </p>
         <pre
-          class="bg-dark text-white scroll-x overflow-auto q-pa-md"
+          class="scroll-x overflow-auto q-pa-md q-card--bordered"
         ><code v-text="code" /></pre>
       </q-card-section>
     </q-card>
     <q-table
+      flat
+      bordered
       grid
       :title="$t('namespaces')"
       :rows="namespaceList?.items"
@@ -43,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Namespace, NamespaceList } from 'src/types';
+import { Namespace, NamespaceList } from 'src/api/types';
 import { api } from 'boot/axios';
 import { Dialog } from 'quasar';
 import AddNamespaceDialog from 'components/AddNamespaceDialog.vue';
@@ -55,12 +57,10 @@ type Data = {
 
 export default defineComponent({
   name: 'NamespacesListPage',
-  data(): Data {
-    return {
-      loadingNamespaces: false,
-      namespaceList: undefined,
-    };
-  },
+  data: (): Data => ({
+    loadingNamespaces: false,
+    namespaceList: undefined,
+  }),
   computed: {
     code() {
       return `kubectl config set-cluster applicaset-ash1 --server=https://ash1.clusters.applicaset.com
@@ -88,7 +88,7 @@ kubectl config use-context applicaset-oidc@applicaset-ash1`;
           name: 'tenant',
           required: true,
           label: this.$t('tenant'),
-          field: (row: Namespace) => row.metadata.ownerReferences[0]?.name,
+          field: (row: Namespace) => row.metadata.ownerReferences?.[0]?.name,
           format: (val: string) => `${val}`,
         },
       ];
