@@ -25,7 +25,7 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <router-view />
+      <router-view v-if="initialized" />
     </q-page-container>
     <q-footer class="text-center q-pa-md" v-html="$t('copyrightText')" />
   </q-layout>
