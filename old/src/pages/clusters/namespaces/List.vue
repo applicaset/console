@@ -69,10 +69,10 @@ export default defineComponent({
   }),
   computed: {
     code() {
-      return `kubectl config set-cluster applicaset-nbg1 --server=https://nbg1.clusters.applicaset.com
+      return `kubectl config set-cluster applicaset-ash1 --server=https://ash1.clusters.applicaset.com
 kubectl config set-credentials applicaset-oidc --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-command=kubectl --exec-arg=oidc-login --exec-arg=get-token --exec-arg=--oidc-issuer-url=auth.applicaset.com/realms/applicaset --exec-arg=--oidc-client-id=applicaset
-kubectl config set-context applicaset-oidc@applicaset-nbg1 --cluster=applicaset-nbg1 --user=applicaset-oidc
-kubectl config use-context applicaset-oidc@applicaset-nbg1`;
+kubectl config set-context applicaset-oidc@applicaset-ash1 --cluster=applicaset-ash1 --user=applicaset-oidc
+kubectl config use-context applicaset-oidc@applicaset-ash1`;
     },
     columns() {
       return [

@@ -15,7 +15,7 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://nbg1.clusters.applicaset.com/' });
+const api = axios.create({ baseURL: 'https://ash1.clusters.applicaset.com/' });
 
 api.interceptors.response.use(
   (response) => {
@@ -28,7 +28,7 @@ api.interceptors.response.use(
     });
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default boot(({ app }) => {

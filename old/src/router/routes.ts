@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
         name: 'Clusters',
         path: 'clusters',
         component: WrapperLayout,
-        redirect: { name: 'Cluster', params: { clusterName: 'nbg1' } },
+        redirect: { name: 'Cluster', params: { clusterName: 'ash1' } },
         children: [
           {
             name: 'ClustersList',

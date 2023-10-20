@@ -1,38 +1,52 @@
-import { route } from 'quasar/wrappers';
-import {
-  createMemoryHistory,
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-} from 'vue-router';
+// Composables
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Wrapper from "@/components/Wrapper.vue";
 
-import routes from './routes';
+const routes: RouteRecordRaw[] = [
+  {
+    path: "/",
+    name: "Index",
+    component: Wrapper,
+    redirect: { name: "Clusters" },
+    children: [
+      {
+        path: "clusters",
+        name: "Clusters",
+        component: Wrapper,
+        redirect: { name: "Cluster", params: { clusterName: "ash1" } },
+        children: [
+          {
+            path: "",
+            name: "ClustersIndex",
+            component: () => import("@/components/ClustersIndex.vue"),
+          },
+          {
+            path: ":clusterName",
+            name: "Cluster",
+            component: () => import("@/components/Cluster.vue"),
+            redirect: { name: "ClusterIndex" },
+            children: [
+              {
+                path: "",
+                name: "ClusterIndex",
+                component: () => import("@/components/ClusterIndex.vue"),
+              },
+              {
+                path: ":groupVersion/:resourceName",
+                name: "ResourcesIndex",
+                component: () => import("@/components/ResourcesIndex.vue"),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
-
-export default route(function (/* { store, ssrContext } */) {
-  const createHistory = import.meta.env.SERVER
-    ? createMemoryHistory
-    : import.meta.env.VITE_VUE_ROUTER_MODE === 'history'
-    ? createWebHistory
-    : createWebHashHistory;
-
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(import.meta.env.VITE_VUE_ROUTER_BASE),
-  });
-
-  return Router;
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
 });
+
+export default router;
