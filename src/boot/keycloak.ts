@@ -12,7 +12,7 @@ export default boot(async ({ app }) => {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
   }
 

@@ -34,7 +34,7 @@ export async function canI(verb: string, resource: string): Promise<boolean> {
           resource,
         },
       },
-    } as SelfSubjectAccessReview
+    } as SelfSubjectAccessReview,
   );
 
   return res.data.status.allowed;

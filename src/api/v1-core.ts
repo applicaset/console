@@ -22,7 +22,7 @@ export type NamespaceList = {
 };
 
 export async function createNamespace(
-  namespace: Partial<Namespace>
+  namespace: Partial<Namespace>,
 ): Promise<Namespace> {
   const res = await api.post('/api/v1/namespaces', namespace);
 
