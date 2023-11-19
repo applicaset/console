@@ -1,38 +1,43 @@
-import { route } from 'quasar/wrappers';
-import {
-  createMemoryHistory,
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-} from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router";
+import Index from "@/views/Index.vue";
+import Clusters from "@/views/clusters/Index.vue";
+import Cluster from "@/views/clusters/cluster/Index.vue";
+import Namespaces from "@/views/clusters/cluster/namespaces/Index.vue";
 
-import routes from './routes';
+const routes = [
+  {
+    path: "/",
+    component: Index,
+    redirect: { name: "Clusters" },
+    children: [
+      {
+        path: "clusters",
+        name: "Clusters",
+        component: Clusters,
+        redirect: { name: "Cluster", params: {clusterName: 'ash1'} },
+        children: [
+          {
+            path: ":clusterName",
+            name: "Cluster",
+            component: Cluster,
+            redirect: { name: "Namespaces" },
+            children: [
+              {
+                path: "namespaces",
+                name: "Namespaces",
+                component: Namespaces
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
 
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
-
-export default route(function (/* { store, ssrContext } */) {
-  const createHistory = import.meta.env.SERVER
-    ? createMemoryHistory
-    : import.meta.env.VITE_VUE_ROUTER_MODE === 'history'
-    ? createWebHistory
-    : createWebHashHistory;
-
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(import.meta.env.VITE_VUE_ROUTER_BASE),
-  });
-
-  return Router;
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
 });
+
+export default router;

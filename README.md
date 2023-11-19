@@ -1,43 +1,53 @@
-# Quasar App (quasar-project)
+# default
 
-A Quasar Project
+## Project setup
 
-## Install the dependencies
-
-```bash
+```
+# yarn
 yarn
-# or
+
+# npm
 npm install
+
+# pnpm
+pnpm install
+
+# bun
+bun install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Compiles and hot-reloads for development
 
-```bash
-quasar dev
+```
+# yarn
+yarn dev
+
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# bun
+bun run dev
 ```
 
-### Lint the files
+### Compiles and minifies for production
 
-```bash
-yarn lint
-# or
-npm run lint
+```
+# yarn
+yarn build
+
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# bun
+bun run build
 ```
 
-### Format the files
+### Customize configuration
 
-```bash
-yarn format
-# or
-npm run format
-```
-
-### Build the app for production
-
-```bash
-quasar build
-```
-
-### Customize the configuration
-
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+See [Configuration Reference](https://vitejs.dev/config/).
