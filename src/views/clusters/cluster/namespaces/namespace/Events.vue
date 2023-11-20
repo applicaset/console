@@ -21,7 +21,9 @@
             <tbody>
             <tr v-for="event in getNamespacedList(clusterName,namespaceName,'v1','Event')" :key="event.metadata.uid">
               <td>
-                {{ event.type }}
+                <v-chip :color="eventTypeColor(event.type)">
+                  {{ event.type }}
+                </v-chip>
               </td>
               <td>
                 {{ event.reason }}
@@ -32,8 +34,8 @@
               <td>
                 {{ `${event.involvedObject.kind}/${event.involvedObject.name}` }}
               </td>
-              <td>
-                {{ event.lastTimestamp }}
+              <td class="text-no-wrap">
+                {{ formatDate(event.lastTimestamp) }}
               </td>
             </tr>
             </tbody>
@@ -50,6 +52,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
+import { formatDistance } from "date-fns";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -58,4 +61,19 @@ const namespaceName = route.params.namespaceName as string;
 const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
+
+function formatDate(date: string): string {
+  return formatDistance(new Date(date), new Date(), { addSuffix: true });
+}
+
+function eventTypeColor(type: string): string {
+  switch (type) {
+    case "Normal":
+      return "info"
+    case "Warning":
+      return "error"
+    default:
+      return ""
+  }
+}
 </script>
