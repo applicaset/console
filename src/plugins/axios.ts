@@ -1,6 +1,6 @@
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import { App } from "@vue/runtime-core";
+import { App } from "vue";
 
 
 const AxiosPlugin = {
