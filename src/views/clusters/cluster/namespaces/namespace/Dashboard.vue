@@ -2,7 +2,9 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">Dashboard ({{ namespaceName }})</h2>
+        <h2 class="text-h2">
+          Dashboard
+        </h2>
       </v-col>
     </v-row>
     <v-row>

@@ -1,45 +1,32 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col>
-        <h2 class="text-h2">Events ({{ namespaceName }})</h2>
+        <h2 class="text-h2">
+          Events
+        </h2>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <v-card>
-          <v-table>
-            <thead>
-            <tr>
-              <th>Type</th>
-              <th>Reason</th>
-              <th>Message</th>
-              <th>Object</th>
-              <th>Last Seen</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="event in getNamespacedList(clusterName,namespaceName,'v1','Event')" :key="event.metadata.uid">
-              <td>
-                <v-chip :color="eventTypeColor(event.type)">
-                  {{ event.type }}
-                </v-chip>
-              </td>
-              <td>
-                {{ event.reason }}
-              </td>
-              <td>
-                {{ event.message }}
-              </td>
-              <td>
-                {{ `${event.involvedObject.kind}/${event.involvedObject.name}` }}
-              </td>
-              <td class="text-no-wrap">
-                {{ formatDate(event.lastTimestamp) }}
-              </td>
-            </tr>
-            </tbody>
-          </v-table>
+          <v-data-table-virtual
+            :headers="headers"
+            :items="getNamespacedList(clusterName,namespaceName,'v1','Event')"
+            multi-sort
+          >
+            <template #item.type="{value}">
+              <v-chip :color="eventTypeColor(value)">
+                {{ value }}
+              </v-chip>
+            </template>
+            <template #item.involvedObject="{value}">
+              {{ `${value.kind}: ${value.name}` }}
+            </template>
+            <template #item.lastTimestamp="{value}">
+              {{ formatDate(value) }}
+            </template>
+          </v-data-table-virtual>
         </v-card>
       </v-col>
     </v-row>
@@ -62,6 +49,14 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
+const headers = [
+  { title: "Type", align: "center", key: "type" },
+  { title: "Reason", align: "start", key: "reason" },
+  { title: "Message", align: "start", key: "message", sortable: false },
+  { title: "Involved Object", align: "start", key: "involvedObject" },
+  { title: "Last Seen", align: "center", key: "lastTimestamp" }
+];
+
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date(), { addSuffix: true });
 }
@@ -69,11 +64,11 @@ function formatDate(date: string): string {
 function eventTypeColor(type: string): string {
   switch (type) {
     case "Normal":
-      return "info"
+      return "info";
     case "Warning":
-      return "error"
+      return "error";
     default:
-      return ""
+      return "";
   }
 }
 </script>
