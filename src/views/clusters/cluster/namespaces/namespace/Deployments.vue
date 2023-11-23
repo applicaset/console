@@ -12,11 +12,11 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'apps/v1','Deployment')"
+            :items="getNamespacedList(clusterName,namespaceName,'apps/v1','Deployment') as Deployment[]"
             multi-sort
           >
             <template #item.status.readyReplicas="{item}">
-              {{ `${item.status.readyReplicas}/${item.status.availableReplicas}` }}
+              {{ item.status ? `${item.status.readyReplicas}/${item.status.availableReplicas}` : "-" }}
             </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
@@ -40,6 +40,8 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import { Deployment } from "@/types/apps-v1";
+import { VDataTable } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -55,7 +57,7 @@ const headers = [
   { title: "Replicas", align: "center", key: "spec.replicas" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "Conditions", align: "center", key: "status.conditions" }
-];
+] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date());

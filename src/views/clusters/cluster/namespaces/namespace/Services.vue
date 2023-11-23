@@ -18,7 +18,7 @@
 
             <template #item.spec.ports="{value}">
               {{
-                value.map((port)=>(`${port.port}/${port.protocol}`)).join(", ")
+                value.map((port:any)=>(`${port.port}/${port.protocol}`)).join(", ")
               }}
             </template>
 
@@ -44,6 +44,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import { VDataTable } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -61,7 +62,7 @@ const headers = [
   { title: "ExternalIP", align: "start", key: "status.loadBalancer.ingress" },
   { title: "Selector", align: "start", key: "spec.selector" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
-];
+] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date());

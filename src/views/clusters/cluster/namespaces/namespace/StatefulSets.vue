@@ -12,11 +12,11 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'apps/v1','StatefulSet')"
+            :items="getNamespacedList(clusterName,namespaceName,'apps/v1','StatefulSet') as StatefulSet[]"
             multi-sort
           >
             <template #item.status.readyReplicas="{item}">
-              {{ `${item.status.readyReplicas}/${item.status.availableReplicas}` }}
+              {{ item.status ? `${item.status.readyReplicas}/${item.status.availableReplicas}` : "-" }}
             </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
@@ -35,6 +35,8 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import { StatefulSet } from "@/types/apps-v1";
+import { VDataTable } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -48,8 +50,8 @@ const headers = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Pods", align: "center", key: "status.readyReplicas", sortable: false },
   { title: "Replicas", align: "center", key: "spec.replicas" },
-  { title: "Age", align: "center", key: "metadata.creationTimestamp" },
-];
+  { title: "Age", align: "center", key: "metadata.creationTimestamp" }
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date());

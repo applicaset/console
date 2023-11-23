@@ -16,7 +16,11 @@
             multi-sort
           >
             <template #item.status.containerStatuses="{value}">
-              <v-icon v-for="containerStatus in value" :color="containerStatusColor(containerStatus)" icon="mdi-square-rounded" />
+              <v-icon
+                v-for="(containerStatus, i) in value" :color="containerStatusColor(containerStatus)"
+                :key="i"
+                icon="mdi-square-rounded"
+              />
             </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
@@ -40,6 +44,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import { VDataTable } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -55,7 +60,7 @@ const headers = [
   { title: "QoS", align: "start", key: "status.qosClass" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "Status", align: "center", key: "status.phase" }
-];
+] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date());

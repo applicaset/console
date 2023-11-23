@@ -40,6 +40,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import { VDataTable } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -55,7 +56,7 @@ const headers = [
   { title: "Message", align: "start", key: "message", sortable: false },
   { title: "Involved Object", align: "start", key: "involvedObject" },
   { title: "Last Seen", align: "center", key: "lastTimestamp" }
-];
+] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
   return formatDistance(new Date(date), new Date(), { addSuffix: true });
