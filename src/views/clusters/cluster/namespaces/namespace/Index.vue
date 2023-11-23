@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer :permanent="true">
+    <v-navigation-drawer v-model="drawer">
       <v-toolbar :flat="true">
         <v-btn icon="mdi-arrow-left" :to="{name:'Namespaces'}" :exact="true" />
         <v-toolbar-title>
@@ -62,7 +62,7 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { inject } from "vue";
+import { inject, ref } from "vue";
 import {
   loadResourceQuotas,
   loadEvents,
@@ -86,6 +86,8 @@ const axios: any = inject("axios");
 
 const clusterName = route.params.clusterName as string;
 const namespaceName = route.params.namespaceName as string;
+
+const drawer = ref(true)
 
 loadResourceQuotas(axios, clusterName, namespaceName);
 loadEvents(axios, clusterName, namespaceName);

@@ -7,7 +7,9 @@
           <template v-slot:activator="{ props }">
             <v-btn :rounded="false" v-bind="props">
               <v-avatar :image="avatar" class="me-2" />
-              {{ userTitle }}
+              <template v-if="$vuetify.display.smAndUp">
+                {{ userTitle }}
+              </template>
             </v-btn>
           </template>
           <v-list>

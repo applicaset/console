@@ -1,3 +1,5 @@
+// https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/
+
 type ManagedFieldsEntry = {}
 
 type OwnerReference = {}
