@@ -17,10 +17,13 @@
                 <template v-for="resourceQuota in getNamespacedList(clusterName,namespaceName,'v1','ResourceQuota')">
                   <tr v-for="(v, k) in resourceQuota.spec.hard" :key="k">
                     <td>
+                      <v-icon :icon="quotaIcon(`${k}`)" />
+                    </td>
+                    <td>
                       {{ k }}
                     </td>
                     <td>
-                      {{ `${resourceQuota.status.used[k] || "?"}/${v}` }}
+                      {{ `${resourceQuota.status.used[k] || "?"} / ${v}` }}
                     </td>
                   </tr>
                 </template>
@@ -31,7 +34,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-card title="Applications"></v-card>
+            <v-card title="Applications">
+              <v-card-text>
+                <ApplicationsList :cluster-name="clusterName" :namespace-name="namespaceName" />
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -80,6 +87,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
+import ApplicationsList from "@/components/ApplicationsList.vue";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -99,6 +107,23 @@ function eventTypeColor(type: string): string {
       return "info"
     case "Warning":
       return "error"
+    default:
+      return ""
+  }
+}
+
+function quotaIcon(item: string): string {
+  switch (item) {
+    case "limits.memory":
+      return "mdi-memory"
+    case "requests.memory":
+      return "mdi-memory"
+    case "limits.cpu":
+      return "mdi-cpu-64-bit"
+    case "requests.cpu":
+      return "mdi-cpu-64-bit"
+    case "pods":
+      return "mdi-package"
     default:
       return ""
   }

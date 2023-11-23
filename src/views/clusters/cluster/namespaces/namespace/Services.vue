@@ -23,7 +23,7 @@
             </template>
 
             <template #item.spec.selector="{value}">
-              <v-chip v-for="(val,key) in value" :key="key" class="mx-1">
+              <v-chip v-for="(val,key) in value" :key="key" class="ma-1">
                 {{ `${key}=${val}`}}
               </v-chip>
             </template>

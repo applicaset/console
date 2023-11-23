@@ -16,7 +16,7 @@
             multi-sort
           >
             <template #item.status.readyReplicas="{item}">
-              {{ item.status ? `${item.status.readyReplicas}/${item.status.availableReplicas}` : "-" }}
+              {{ item.status?.readyReplicas ? `${item.status.readyReplicas}/${item.status.availableReplicas}` : "-" }}
             </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}

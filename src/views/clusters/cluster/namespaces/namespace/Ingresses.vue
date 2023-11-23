@@ -19,7 +19,7 @@
               {{ value.map((rule:any)=>(rule.host)).join(", ")}}
             </template>
             <template #item.status.loadBalancer.ingress="{value}">
-              {{ value.map((item:any)=>(item.ip)).join(", ")}}
+              {{ value?.map((item:any)=>(item.ip)).join(", ") || '-'}}
             </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
