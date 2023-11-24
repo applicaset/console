@@ -15,10 +15,12 @@ async function loadByNamespaceAPIVersionKind(axios: Axios, clusterName: string, 
 
   const plural = pluralFromKind(kind);
 
-  let url = `https://${clusterName}.clusters.applicaset.com/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
+  const clusterUrl = dataStore.getClusterUrl(clusterName)
+
+  let url = `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
 
   if (apiVersion == "v1")
-    url = `https://${clusterName}.clusters.applicaset.com/api/v1/namespaces/${namespaceName}/${plural}`;
+    url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`;
 
   const res = await axios.get(url);
 
@@ -28,7 +30,9 @@ async function loadByNamespaceAPIVersionKind(axios: Axios, clusterName: string, 
 export async function loadNamespaces(axios: Axios, clusterName: string) {
   const dataStore = useDataStore();
 
-  const res = await axios.get(`https://${clusterName}.clusters.applicaset.com/api/v1/namespaces`);
+  const clusterUrl = dataStore.getClusterUrl(clusterName)
+
+  const res = await axios.get(`${clusterUrl}/api/v1/namespaces`);
 
   dataStore.setList(clusterName, "v1", "Namespace", res.data.items);
 }

@@ -77,6 +77,8 @@ const dataStore = useDataStore();
 
 const { getList } = storeToRefs(dataStore);
 
+const clusterUrl = dataStore.getClusterUrl(clusterName)
+
 const addNamespaceDialog = ref(false);
 const creatingNamespace = ref(false);
 
@@ -95,7 +97,7 @@ async function createNamespace() {
   creatingNamespace.value = true;
 
   try {
-    await axios.post(`https://${clusterName}.clusters.applicaset.com/api/v1/namespaces`, newNamespace.value);
+    await axios.post(`${clusterUrl}/api/v1/namespaces`, newNamespace.value);
     newNamespace.value = newNamespaceValue;
     console.log(`Namespace '${newNamespace.value.metadata.name}' created successfully.`);
     addNamespaceDialog.value = false;

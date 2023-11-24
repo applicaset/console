@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "@/views/Index.vue";
 import Clusters from "@/views/clusters/Index.vue";
+import ClustersList from "@/views/clusters/List.vue";
 import Cluster from "@/views/clusters/cluster/Index.vue";
 import ClusterDashboard from "@/views/clusters/cluster/Dashboard.vue";
 import Namespaces from "@/views/clusters/cluster/namespaces/Index.vue";
@@ -31,8 +32,13 @@ const routes = [
         path: "clusters",
         name: "Clusters",
         component: Clusters,
-        redirect: { name: "Cluster", params: {clusterName: 'ash1'} },
+        redirect: { name: "ClustersList" },
         children: [
+          {
+            path: "",
+            name: "ClustersList",
+            component: ClustersList
+          },
           {
             path: ":clusterName",
             name: "Cluster",
@@ -42,7 +48,7 @@ const routes = [
               {
                 path: "dashboard",
                 name: "ClusterDashboard",
-                component: ClusterDashboard,
+                component: ClusterDashboard
               },
               {
                 path: "namespaces",
@@ -64,73 +70,73 @@ const routes = [
                       {
                         path: "dashboard",
                         name: "NamespaceDashboard",
-                        component: NamespaceDashboard,
+                        component: NamespaceDashboard
                       },
                       {
                         path: "applications",
                         name: "Applications",
-                        component: Applications,
+                        component: Applications
                       },
                       {
                         path: "pods",
                         name: "Pods",
-                        component: Pods,
+                        component: Pods
                       },
                       {
                         path: "deployments",
                         name: "Deployments",
-                        component: Deployments,
+                        component: Deployments
                       },
                       {
                         path: "statefulsets",
                         name: "StatefulSets",
-                        component: StatefulSets,
+                        component: StatefulSets
                       },
                       {
                         path: "configmaps",
                         name: "ConfigMaps",
-                        component: ConfigMaps,
+                        component: ConfigMaps
                       },
                       {
                         path: "secrets",
                         name: "Secrets",
-                        component: Secrets,
+                        component: Secrets
                       },
                       {
                         path: "services",
                         name: "Services",
-                        component: Services,
+                        component: Services
                       },
                       {
                         path: "ingresses",
                         name: "Ingresses",
-                        component: Ingresses,
+                        component: Ingresses
                       },
                       {
                         path: "persistentvolumeclaims",
                         name: "PersistentVolumeClaims",
-                        component: PersistentVolumeClaims,
+                        component: PersistentVolumeClaims
                       },
                       {
                         path: "events",
                         name: "Events",
-                        component: Events,
+                        component: Events
                       },
                       {
                         path: "serviceaccounts",
                         name: "ServiceAccounts",
-                        component: ServiceAccounts,
+                        component: ServiceAccounts
                       },
                       {
                         path: "roles",
                         name: "Roles",
-                        component: Roles,
+                        component: Roles
                       },
                       {
                         path: "rolebindings",
                         name: "RoleBindings",
-                        component: RoleBindings,
-                      },
+                        component: RoleBindings
+                      }
                     ]
                   }
                 ]
