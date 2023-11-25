@@ -59,7 +59,7 @@ const headers = [
 ] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
-  return formatDistance(new Date(date), new Date(), { addSuffix: true });
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
 }
 
 function eventTypeColor(type: string): string {

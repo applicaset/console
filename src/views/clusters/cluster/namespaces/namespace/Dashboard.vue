@@ -98,7 +98,7 @@ const dataStore = useDataStore();
 const { getNamespacedList } = storeToRefs(dataStore);
 
 function formatDate(date: string) {
-  return formatDistance(new Date(date), new Date(), { addSuffix: true });
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
 }
 
 function eventTypeColor(type: string): string {
