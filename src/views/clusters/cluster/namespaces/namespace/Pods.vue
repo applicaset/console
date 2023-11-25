@@ -71,10 +71,10 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
-import { Pod } from "@/types/v1";
+import { Pod, PodStatus } from "@/types/v1";
 import { deletePod } from "@/api/v1";
 
 const route = useRoute();
@@ -98,7 +98,7 @@ const headers = [
 ] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
-  return formatDistance(new Date(date), new Date());
+  return formatDistanceToNow(new Date(date));
 }
 
 function containerStatusColor(containerStatus: any): string {
@@ -117,12 +117,18 @@ function containerStatusColor(containerStatus: any): string {
   return "";
 }
 
-function phaseColor(phase: any): string {
+function phaseColor(phase: PodStatus["phase"]): string {
   switch (phase) {
     case "Pending":
       return "warning";
     case "Running":
       return "success";
+    case "Succeeded":
+      return "info";
+    case "Failed":
+      return "error";
+    case "Unknown":
+      return "";
     default:
       return "";
   }

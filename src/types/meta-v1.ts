@@ -21,3 +21,5 @@ export type ObjectMeta = {
   selfLink?: string
   readonly uid?: string
 }
+
+export type Time = string

@@ -64,7 +64,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { PersistentVolumeClaim } from "@/types/v1";
@@ -91,7 +91,7 @@ const headers = [
 ] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
-  return formatDistance(new Date(date), new Date());
+  return formatDistanceToNow(new Date(date));
 }
 function phaseColor(phase: any): string {
   switch (phase) {

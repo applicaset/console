@@ -86,7 +86,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import ApplicationsList from "@/components/ApplicationsList.vue";
 
 const route = useRoute();

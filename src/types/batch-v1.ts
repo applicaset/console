@@ -1,8 +1,27 @@
-import {ObjectMeta} from "@/types/meta-v1";
+import { ObjectMeta, Time } from "@/types/meta-v1";
+import { ObjectReference } from "@/types/v1";
 
-type JobSpec = {}
+type JobSpec = {
+  completions: number
+}
 
-type JobStatus = {}
+type JobCondition = {}
+
+type UncountedTerminatedPods = {}
+
+type JobStatus = {
+  active: number
+  completedIndexes: string
+  completionTime: Time
+  conditions: JobCondition[]
+  failed: number
+  failedIndexes: string
+  ready: number
+  startTime: Time
+  succeeded: number
+  terminating: number
+  uncountedTerminatedPods: UncountedTerminatedPods
+}
 
 export type Job = {
   apiVersion: "batch/v1"
@@ -15,8 +34,9 @@ export type Job = {
 type CronJobSpec = {}
 
 type CronJobStatus = {
-  availableReplicas: number
-  readyReplicas: number
+  active: ObjectReference[]
+  lastScheduleTime: Time
+  lastSuccessfulTime: Time
 }
 
 export type CronJob = {

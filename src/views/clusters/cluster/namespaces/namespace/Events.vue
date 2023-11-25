@@ -39,7 +39,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { VDataTable } from "vuetify/components";
 
 const route = useRoute();

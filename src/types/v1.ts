@@ -21,7 +21,9 @@ export type Namespace = {
 
 type PodSpec = {}
 
-type PodStatus = {}
+export type PodStatus = {
+  phase: 'Pending'|'Running'|'Succeeded'|'Failed'|'Unknown'
+}
 
 export type Pod = {
   apiVersion: 'v1'
@@ -90,3 +92,5 @@ export type PersistentVolumeClaim = {
   spec: PersistentVolumeClaimSpec
   readonly status?: PersistentVolumeClaimStatus
 }
+
+export type ObjectReference = {}

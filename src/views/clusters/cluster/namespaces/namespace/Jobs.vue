@@ -15,13 +15,23 @@
             :items="getNamespacedList(clusterName,namespaceName,'batch/v1','Job') as Job[]"
             multi-sort
           >
+            <template #item.spec.completion="{item}">
+              {{ `${item.status?.succeeded}/${item.spec.completions}` }}
+            </template>
+            <template #item.status.completionTime="{item}">
+              {{
+                item?.status?.startTime &&
+                item?.status?.completionTime &&
+                timeDiff(item?.status?.startTime, item?.status?.completionTime) || "-"
+              }}
+            </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
             </template>
             <template #item.status.conditions="{value}">
-                <v-chip v-for="condition in value" :key="condition.type" :color="conditionColor(condition)" class="mx-1">
-                  {{ condition.type}}
-                </v-chip>
+              <v-chip v-for="condition in value" :key="condition.type" :color="conditionColor(condition)" class="mx-1">
+                {{ condition.type }}
+              </v-chip>
             </template>
             <template #item._actions="{item}">
               <v-menu>
@@ -31,7 +41,8 @@
                   </v-btn>
                 </template>
                 <v-list>
-                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
+                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete"
+                               title="Delete" />
                 </v-list>
               </v-menu>
               <v-dialog
@@ -64,7 +75,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceStrict, formatDistanceToNow } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Job } from "@/types/batch-v1";
@@ -83,26 +94,31 @@ const { getNamespacedList } = storeToRefs(dataStore);
 
 const headers = [
   { title: "Name", align: "start", key: "metadata.name" },
-  { title: "Completion", align: "center", key: "spec.completion" },
-  { title: "Age", align: "center", key: "metadata.creationTimestamp" },
-  { title: "Conditions", align: "center", key: "status.conditions" },
+  { title: "Completion", align: "start", key: "spec.completion" },
+  { title: "Duration", align: "start", key: "status.completionTime" },
+  { title: "Age", align: "start", key: "metadata.creationTimestamp" },
+  { title: "Conditions", align: "start", key: "status.conditions" },
   { title: "", align: "center", key: "_actions", sortable: false }
-] as InstanceType<typeof VDataTable>['headers'];
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
-  return formatDistance(new Date(date), new Date());
+  return formatDistanceToNow(new Date(date));
+}
+
+function timeDiff(start: string, end: string) {
+  return formatDistanceStrict(new Date(start), new Date(end), { unit: "second" });
 }
 
 function conditionColor(condition: any): string {
   switch (condition.status) {
     case "True":
-      return "success"
+      return "success";
     case "False":
-      return "error"
+      return "error";
     case "Unknown":
-      return "warning"
+      return "warning";
     default:
-      return ""
+      return "";
   }
 }
 

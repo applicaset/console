@@ -15,6 +15,12 @@
             :items="getNamespacedList(clusterName,namespaceName,'batch/v1','CronJob') as CronJob[]"
             multi-sort
           >
+            <template #item.status.active="{value}">
+              {{ value?.length || 0 }}
+            </template>
+            <template #item.status.lastScheduleTime="{value}">
+              {{ formatDate(value) }}
+            </template>
             <template #item.metadata.creationTimestamp="{value}">
               {{ formatDate(value) }}
             </template>
@@ -59,7 +65,7 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { CronJob } from "@/types/batch-v1";
@@ -78,16 +84,16 @@ const { getNamespacedList } = storeToRefs(dataStore);
 
 const headers = [
   { title: "Name", align: "start", key: "metadata.name" },
-  { title: "Schedule", align: "center", key: "spec.schedule" },
-  { title: "Suspend", align: "center", key: "spec.suspend" },
-  { title: "Active", align: "center", key: "" },
-  { title: "Last Schedule", align: "center", key: "status.lastScheduleTime" },
-  { title: "Age", align: "center", key: "metadata.creationTimestamp" },
+  { title: "Schedule", align: "start", key: "spec.schedule", sortable: false },
+  { title: "Suspend", align: "start", key: "spec.suspend" },
+  { title: "Active", align: "start", key: "status.active" },
+  { title: "Last Schedule", align: "start", key: "status.lastScheduleTime" },
+  { title: "Age", align: "start", key: "metadata.creationTimestamp" },
   { title: "", align: "center", key: "_actions", sortable: false }
 ] as InstanceType<typeof VDataTable>['headers'];
 
 function formatDate(date: string): string {
-  return formatDistance(new Date(date), new Date());
+  return formatDistanceToNow(new Date(date));
 }
 const deleteDialog = ref<{ [name: string]: boolean }>({});
 const deleting = ref<{ [name: string]: boolean }>({});
