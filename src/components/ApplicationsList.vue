@@ -15,7 +15,8 @@
                   <template #append>
                     <v-row>
                       <v-col>
-                        {{ workload.status?.readyReplicas ? `${workload.status.readyReplicas}/${workload.status.availableReplicas}` : "-" }}
+                        {{ workload.status?.readyReplicas ? `${workload.status.readyReplicas}/${workload.status.availableReplicas}` : "-"
+                        }}
                       </v-col>
                     </v-row>
                   </template>
@@ -33,11 +34,11 @@
 import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   clusterName: string
   namespaceName: string
-}>()
-
+}>();
 
 const dataStore = useDataStore();
 

@@ -66,7 +66,7 @@ import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Secret } from "@/types/v1";
-import { deleteSecret } from "@/api/api";
+import { deleteSecret } from "@/api/v1";
 
 const route = useRoute();
 

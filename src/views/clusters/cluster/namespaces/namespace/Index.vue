@@ -4,7 +4,7 @@
       <v-toolbar :flat="true">
         <v-btn icon="mdi-arrow-left" :to="{name:'Namespaces'}" :exact="true" />
         <v-toolbar-title>
-          {{ namespaceName}}
+          {{ namespaceName }}
         </v-toolbar-title>
       </v-toolbar>
       <v-list>
@@ -21,6 +21,8 @@
           <v-list-item title="Pods" :to="{name: 'Pods'}" />
           <v-list-item title="Deployments" :to="{name: 'Deployments'}" />
           <v-list-item title="Stateful Sets" :to="{name: 'StatefulSets'}" />
+          <v-list-item title="Jobs" :to="{name: 'Jobs'}" />
+          <v-list-item title="CronJobs" :to="{name: 'CronJobs'}" />
         </v-list-group>
         <v-list-group>
           <template #activator="{ props }">
@@ -63,22 +65,20 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { inject, ref } from "vue";
+import { loadCronJobs, loadJobs } from "@/api/batch-v1";
 import {
-  loadResourceQuotas,
-  loadEvents,
-  loadPods,
-  loadDeployments,
-  loadStatefulSets,
-  loadDaemonSets,
-  loadSecrets,
   loadConfigMaps,
-  loadService,
-  loadIngresses,
+  loadEvents,
   loadPersistentVolumeClaims,
-  loadServiceAccounts,
-  loadRoles,
-  loadRoleBindings
-} from "@/api/api";
+  loadPods,
+  loadResourceQuotas,
+  loadSecrets,
+  loadService,
+  loadServiceAccounts
+} from "@/api/v1";
+import { loadDaemonSets, loadDeployments, loadStatefulSets } from "@/api/apps-v1";
+import { loadIngresses } from "@/api/networking-k8s-io-v1";
+import { loadRoleBindings, loadRoles } from "@/api/rbac-authorization-k8s-io-v1";
 
 const route = useRoute();
 
@@ -87,7 +87,7 @@ const axios: any = inject("axios");
 const clusterName = route.params.clusterName as string;
 const namespaceName = route.params.namespaceName as string;
 
-const drawer = ref(true)
+const drawer = ref(true);
 
 loadResourceQuotas(axios, clusterName, namespaceName);
 loadEvents(axios, clusterName, namespaceName);
@@ -95,6 +95,8 @@ loadPods(axios, clusterName, namespaceName);
 loadDeployments(axios, clusterName, namespaceName);
 loadStatefulSets(axios, clusterName, namespaceName);
 loadDaemonSets(axios, clusterName, namespaceName);
+loadJobs(axios, clusterName, namespaceName);
+loadCronJobs(axios, clusterName, namespaceName);
 loadSecrets(axios, clusterName, namespaceName);
 loadConfigMaps(axios, clusterName, namespaceName);
 loadService(axios, clusterName, namespaceName);

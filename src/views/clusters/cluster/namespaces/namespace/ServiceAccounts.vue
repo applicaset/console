@@ -61,9 +61,9 @@ import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
-import { inject, ref } from "vue";
 import { ServiceAccount } from "@/types/v1";
-import { deleteServiceAccount } from "@/api/api";
+import { inject, ref } from "vue";
+import { deleteServiceAccount } from "@/api/v1";
 
 const route = useRoute();
 

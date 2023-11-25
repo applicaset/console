@@ -65,7 +65,7 @@ import { inject, ref } from "vue";
 import { Namespace } from "@/types/v1";
 import { useDataStore } from "@/store/data";
 import { storeToRefs } from "pinia";
-import { loadNamespaces } from "@/api/api";
+import { loadNamespaces } from "@/api/v1";
 
 const route = useRoute();
 

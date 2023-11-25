@@ -66,7 +66,7 @@ import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { RoleBinding } from "@/types/rbac-authorization-k8s-io-v1";
-import { deleteRoleBinding } from "@/api/api";
+import { deleteRoleBinding } from "@/api/rbac-authorization-k8s-io-v1";
 
 const route = useRoute();
 

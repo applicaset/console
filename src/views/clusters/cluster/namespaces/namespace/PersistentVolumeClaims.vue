@@ -68,7 +68,7 @@ import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { PersistentVolumeClaim } from "@/types/v1";
-import { deletePersistentVolumeClaim } from "@/api/api";
+import { deletePersistentVolumeClaim } from "@/api/v1";
 
 const route = useRoute();
 

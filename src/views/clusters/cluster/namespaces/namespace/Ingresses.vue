@@ -69,7 +69,7 @@ import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Ingress } from "@/types/networking-k8s-io-v1";
-import { deleteIngress } from "@/api/api";
+import { deleteIngress } from "@/api/networking-k8s-io-v1";
 
 const route = useRoute();
 

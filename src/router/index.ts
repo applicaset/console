@@ -21,6 +21,8 @@ import Events from "@/views/clusters/cluster/namespaces/namespace/Events.vue";
 import ServiceAccounts from "@/views/clusters/cluster/namespaces/namespace/ServiceAccounts.vue";
 import Roles from "@/views/clusters/cluster/namespaces/namespace/Roles.vue";
 import RoleBindings from "@/views/clusters/cluster/namespaces/namespace/RoleBindings.vue";
+import Jobs from "@/views/clusters/cluster/namespaces/namespace/Jobs.vue";
+import CronJobs from "@/views/clusters/cluster/namespaces/namespace/CronJobs.vue";
 
 const routes = [
   {
@@ -91,6 +93,16 @@ const routes = [
                         path: "statefulsets",
                         name: "StatefulSets",
                         component: StatefulSets
+                      },
+                      {
+                        path: "jobs",
+                        name: "Jobs",
+                        component: Jobs
+                      },
+                      {
+                        path: "cronjobs",
+                        name: "CronJobs",
+                        component: CronJobs
                       },
                       {
                         path: "configmaps",

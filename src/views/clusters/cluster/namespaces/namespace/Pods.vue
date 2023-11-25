@@ -75,7 +75,7 @@ import { formatDistance } from "date-fns";
 import { VDataTable } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Pod } from "@/types/v1";
-import { deletePod } from "@/api/api";
+import { deletePod } from "@/api/v1";
 
 const route = useRoute();
 
