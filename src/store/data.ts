@@ -3,7 +3,7 @@ import { Deployment } from "@/types/apps-v1";
 import { ObjectMeta } from "@/types/meta-v1";
 
 const getNamespacedList = (state: any) => (
-  (clusterName: string, namespaceName: string, apiVersion: string, kind: string) =>
+  (clusterName: string, namespaceName: string, apiVersion: string, kind: string): any[] =>
     state.namespacedData[clusterName] &&
     state.namespacedData[clusterName][namespaceName] &&
     state.namespacedData[clusterName][namespaceName][apiVersion] &&
@@ -26,6 +26,11 @@ export const useDataStore = defineStore("data", {
       (clusterName: string, apiVersion: string, kind: string) => state.data[clusterName] && state.data[clusterName][apiVersion] && state.data[clusterName][apiVersion][kind] || []
     ),
     getNamespacedList: getNamespacedList,
+    getResource: (state) => (
+      (clusterName: string, namespaceName: string, apiVersion: string, kind: string, name: string) => (
+        getNamespacedList(state)(clusterName, namespaceName, apiVersion, kind).find((resource: { metadata: ObjectMeta }) => resource.metadata.name === name)
+      )
+    ),
     getApplicationNames: (state) => {
       // https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
       return (clusterName: string, namespaceName: string): string[] => {

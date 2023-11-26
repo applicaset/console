@@ -76,7 +76,7 @@ import {
   loadService,
   loadServiceAccounts
 } from "@/api/v1";
-import { loadDaemonSets, loadDeployments, loadStatefulSets } from "@/api/apps-v1";
+import { loadDeployments, loadStatefulSets } from "@/api/apps-v1";
 import { loadIngresses } from "@/api/networking-k8s-io-v1";
 import { loadRoleBindings, loadRoles } from "@/api/rbac-authorization-k8s-io-v1";
 
@@ -94,7 +94,6 @@ loadEvents(axios, clusterName, namespaceName);
 loadPods(axios, clusterName, namespaceName);
 loadDeployments(axios, clusterName, namespaceName);
 loadStatefulSets(axios, clusterName, namespaceName);
-loadDaemonSets(axios, clusterName, namespaceName);
 loadJobs(axios, clusterName, namespaceName);
 loadCronJobs(axios, clusterName, namespaceName);
 loadSecrets(axios, clusterName, namespaceName);

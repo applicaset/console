@@ -24,7 +24,8 @@
     "types": [
       "node",
       "vuetify",
-      "gravatar"
+      "gravatar",
+      "js-yaml"
     ]
   },
   "include": [

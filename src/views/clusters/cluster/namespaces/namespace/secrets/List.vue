@@ -29,6 +29,7 @@
                   </v-btn>
                 </template>
                 <v-list>
+                  <v-list-item prepend-icon="mdi-pencil" title="Edit" :to="{name:'SecretEdit', params:{secretName:item.metadata.name}}" />
                   <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
                 </v-list>
               </v-menu>

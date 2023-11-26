@@ -29,6 +29,11 @@
                   </v-btn>
                 </template>
                 <v-list>
+                  <v-list-item
+                    prepend-icon="mdi-pencil"
+                    title="Edit"
+                    :to="{name:'ConfigMapEdit', params:{configMapName:item.metadata.name}}"
+                  />
                   <v-list-item @click="openDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
                 </v-list>
               </v-menu>
@@ -38,7 +43,11 @@
               >
                 <v-card title="Delete Confirmation">
                   <v-card-text>
-                    Remove Config Map <b>{{ item?.metadata.name }}</b> from namespace <b>{{ item?.metadata.namespace }}</b>?
+                    Remove Config Map
+                    <b>{{ item?.metadata.name }}</b>
+                    from namespace
+                    <b>{{ item?.metadata.namespace }}</b>
+                    ?
                   </v-card-text>
                   <v-card-actions class="justify-end">
                     <v-btn color="" @click="closeDialog(item.metadata.name)">Cancel</v-btn>
