@@ -6,7 +6,7 @@
           <v-toolbar-title>
             Namespaces
           </v-toolbar-title>
-          <v-btn color="primary" prepend-icon="mdi-plus">
+          <v-btn color="primary" prepend-icon="mdi-plus" :disabled="!canCreateNamespace">
             Add
             <v-dialog v-model="addNamespaceDialog" activator="parent" max-width="480">
               <v-form @submit.prevent="createNamespace">
@@ -65,7 +65,7 @@ import { inject, ref } from "vue";
 import { Namespace } from "@/types/v1";
 import { useDataStore } from "@/store/data";
 import { storeToRefs } from "pinia";
-import { loadNamespaces } from "@/api/v1";
+import { canI } from "@/api/authorization-k8s-io-v1";
 
 const route = useRoute();
 
@@ -77,7 +77,7 @@ const dataStore = useDataStore();
 
 const { getList } = storeToRefs(dataStore);
 
-const clusterUrl = dataStore.getClusterUrl(clusterName)
+const clusterUrl = dataStore.getClusterUrl(clusterName);
 
 const addNamespaceDialog = ref(false);
 const creatingNamespace = ref(false);
@@ -93,6 +93,13 @@ const newNamespaceValue: Namespace = {
 
 let newNamespace = ref<Namespace>(newNamespaceValue);
 
+const canCreateNamespace = ref(false);
+
+canI(axios, clusterName, {
+  verb: "create",
+  resource: "namespaces"
+}).then((allowed: boolean) => canCreateNamespace.value = allowed);
+
 async function createNamespace() {
   creatingNamespace.value = true;
 
@@ -105,6 +112,4 @@ async function createNamespace() {
     creatingNamespace.value = false;
   }
 }
-
-loadNamespaces(axios, clusterName as string);
 </script>
