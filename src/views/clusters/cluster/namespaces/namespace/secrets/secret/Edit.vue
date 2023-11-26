@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Edit Secret: {{ secretName }}
-        </h2>
+        <h2 class="text-h2">Edit Secret: {{ secretName }}</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -15,14 +13,19 @@
               <v-textarea v-model="secretYaml" auto-grow />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingSecret">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingSecret"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -44,8 +47,13 @@ const secretName = route.params.secretName as string;
 
 const dataStore = useDataStore();
 
-const secret = dataStore.getResource(clusterName, namespaceName, "v1", "Secret", secretName);
-
+const secret = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "v1",
+  "Secret",
+  secretName,
+);
 
 const secretYaml = ref<string>(yaml.dump(secret));
 
@@ -55,10 +63,15 @@ async function updateSecret() {
   updatingSecret.value = true;
 
   try {
-    await replaceSecret(axios, clusterName, namespaceName, secretName, yaml.load(secretYaml.value) as Secret);
+    await replaceSecret(
+      axios,
+      clusterName,
+      namespaceName,
+      secretName,
+      yaml.load(secretYaml.value) as Secret,
+    );
   } finally {
     updatingSecret.value = false;
   }
 }
-
 </script>

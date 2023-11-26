@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Edit Role: {{ roleName }}
-        </h2>
+        <h2 class="text-h2">Edit Role: {{ roleName }}</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -15,14 +13,19 @@
               <v-textarea v-model="roleYaml" auto-grow />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingRole">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingRole"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -44,8 +47,13 @@ const roleName = route.params.roleName as string;
 
 const dataStore = useDataStore();
 
-const role = dataStore.getResource(clusterName, namespaceName, "rbac.authorization.k8s.io/v1", "Role", roleName);
-
+const role = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "rbac.authorization.k8s.io/v1",
+  "Role",
+  roleName,
+);
 
 const roleYaml = ref<string>(yaml.dump(role));
 
@@ -55,10 +63,15 @@ async function updateRole() {
   updatingRole.value = true;
 
   try {
-    await replaceRole(axios, clusterName, namespaceName, roleName, yaml.load(roleYaml.value) as Role);
+    await replaceRole(
+      axios,
+      clusterName,
+      namespaceName,
+      roleName,
+      yaml.load(roleYaml.value) as Role,
+    );
   } finally {
     updatingRole.value = false;
   }
 }
-
 </script>

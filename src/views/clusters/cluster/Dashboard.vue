@@ -8,14 +8,20 @@
         <v-card>
           <v-card-text>
             <p>
-              To connect to the cluster,
-              you need to have
-              <a href="https://kubernetes.io/docs/tasks/tools/#kubectl" target="_blank">kubectl</a>
+              To connect to the cluster, you need to have
+              <a
+                href="https://kubernetes.io/docs/tasks/tools/#kubectl"
+                target="_blank"
+                >kubectl</a
+              >
               and
-              <a href="https://github.com/int128/kubelogin#setup" target="_blank">oidc-login</a>
-              installed. <br>
+              <a
+                href="https://github.com/int128/kubelogin#setup"
+                target="_blank"
+                >oidc-login</a
+              >
+              installed. <br />
               Then run the command bellow:
-
             </p>
             <pre class="overflow-x-auto border px-4 mt-2">
           <code>
@@ -28,15 +34,11 @@ kubectl config use-context applicaset-oidc@{{ clusterName }}</code>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="4" lg="3" xl="2">
-        <v-card height="160" class="d-block" :to="{name: 'Namespaces'}">
+        <v-card height="160" class="d-block" :to="{ name: 'Namespaces' }">
           <v-card-text class="text-center">
-            <v-icon size="xxx-large">
-              mdi-layers
-            </v-icon>
+            <v-icon size="xxx-large"> mdi-layers </v-icon>
           </v-card-text>
-          <v-card-title class="text-center">
-            Namespaces
-          </v-card-title>
+          <v-card-title class="text-center"> Namespaces </v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -52,9 +54,7 @@ const route = useRoute();
 
 const clusterName = route.params.clusterName as string;
 
-
 const dataStore = useDataStore();
 
 const { getClusterUrl } = storeToRefs(dataStore);
-
 </script>

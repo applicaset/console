@@ -2,9 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Events
-        </h2>
+        <h2 class="text-h2">Events</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -12,26 +10,27 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'v1','Event')"
+            :items="
+              getNamespacedList(clusterName, namespaceName, 'v1', 'Event')
+            "
             multi-sort
           >
-            <template #item.type="{value}">
+            <template #item.type="{ value }">
               <v-chip :color="eventTypeColor(value)">
                 {{ value }}
               </v-chip>
             </template>
-            <template #item.involvedObject="{value}">
+            <template #item.involvedObject="{ value }">
               {{ `${value.kind}: ${value.name}` }}
             </template>
-            <template #item.lastTimestamp="{value}">
+            <template #item.lastTimestamp="{ value }">
               {{ formatDate(value) }}
             </template>
           </v-data-table-virtual>
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -55,8 +54,8 @@ const headers = [
   { title: "Reason", align: "start", key: "reason" },
   { title: "Message", align: "start", key: "message", sortable: false },
   { title: "Involved Object", align: "start", key: "involvedObject" },
-  { title: "Last Seen", align: "center", key: "lastTimestamp" }
-] as InstanceType<typeof VDataTable>['headers'];
+  { title: "Last Seen", align: "center", key: "lastTimestamp" },
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistanceToNow(new Date(date), { addSuffix: true });

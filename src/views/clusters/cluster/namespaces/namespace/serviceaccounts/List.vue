@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Service Accounts
-        </h2>
+        <h2 class="text-h2">Service Accounts</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -12,13 +10,20 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'v1','ServiceAccount') as ServiceAccount[]"
+            :items="
+              getNamespacedList(
+                clusterName,
+                namespaceName,
+                'v1',
+                'ServiceAccount',
+              ) as ServiceAccount[]
+            "
             multi-sort
           >
-            <template #item.metadata.creationTimestamp="{value}">
+            <template #item.metadata.creationTimestamp="{ value }">
               {{ formatDate(value) }}
             </template>
-            <template #item._actions="{item}">
+            <template #item._actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn icon variant="text" color="" v-bind="props">
@@ -29,23 +34,37 @@
                   <v-list-item
                     prepend-icon="mdi-pencil"
                     title="Edit"
-                    :to="{name:'ServiceAccountEdit', params:{serviceAccountName:item.metadata.name}}"
+                    :to="{
+                      name: 'ServiceAccountEdit',
+                      params: { serviceAccountName: item.metadata.name },
+                    }"
                   />
-                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
+                  <v-list-item
+                    base-color="red"
+                    @click="openDeleteDialog(item.metadata.name)"
+                    prepend-icon="mdi-delete"
+                    title="Delete"
+                  />
                 </v-list>
               </v-menu>
-              <v-dialog
-                v-model="deleteDialog[item.metadata.name]"
-                width="auto"
-              >
+              <v-dialog v-model="deleteDialog[item.metadata.name]" width="auto">
                 <v-card title="Delete Confirmation">
                   <v-card-text>
-                    Remove Service Account <b>{{ item?.metadata.name }}</b> from namespace <b>{{ item?.metadata.namespace }}</b>?
+                    Remove Service Account <b>{{ item?.metadata.name }}</b> from
+                    namespace <b>{{ item?.metadata.namespace }}</b
+                    >?
                   </v-card-text>
                   <v-card-actions class="justify-end">
-                    <v-btn color="" @click="closeDeleteDialog(item.metadata.name)">Cancel</v-btn>
-                    <v-btn color="error" :loading="deleting[item.metadata.name]"
-                           @click="doDeleteServiceAccount(item.metadata.name)">Remove
+                    <v-btn
+                      color=""
+                      @click="closeDeleteDialog(item.metadata.name)"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      color="error"
+                      :loading="deleting[item.metadata.name]"
+                      @click="doDeleteServiceAccount(item.metadata.name)"
+                      >Remove
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -55,8 +74,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -84,8 +102,8 @@ const { getNamespacedList } = storeToRefs(dataStore);
 const headers = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
-  { title: "", align: "center", key: "_actions", sortable: false }
-] as InstanceType<typeof VDataTable>['headers'];
+  { title: "", align: "center", key: "_actions", sortable: false },
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistanceToNow(new Date(date));

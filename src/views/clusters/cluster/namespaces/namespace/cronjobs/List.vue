@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Cron Jobs
-        </h2>
+        <h2 class="text-h2">Cron Jobs</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -12,19 +10,26 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'batch/v1','CronJob') as CronJob[]"
+            :items="
+              getNamespacedList(
+                clusterName,
+                namespaceName,
+                'batch/v1',
+                'CronJob',
+              ) as CronJob[]
+            "
             multi-sort
           >
-            <template #item.status.active="{value}">
+            <template #item.status.active="{ value }">
               {{ value?.length || 0 }}
             </template>
-            <template #item.status.lastScheduleTime="{value}">
+            <template #item.status.lastScheduleTime="{ value }">
               {{ formatDate(value) }}
             </template>
-            <template #item.metadata.creationTimestamp="{value}">
+            <template #item.metadata.creationTimestamp="{ value }">
               {{ formatDate(value) }}
             </template>
-            <template #item._actions="{item}">
+            <template #item._actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn icon variant="text" color="" v-bind="props">
@@ -35,23 +40,37 @@
                   <v-list-item
                     prepend-icon="mdi-pencil"
                     title="Edit"
-                    :to="{name:'CronJobEdit', params:{cronJobName:item.metadata.name}}"
+                    :to="{
+                      name: 'CronJobEdit',
+                      params: { cronJobName: item.metadata.name },
+                    }"
                   />
-                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
+                  <v-list-item
+                    base-color="red"
+                    @click="openDeleteDialog(item.metadata.name)"
+                    prepend-icon="mdi-delete"
+                    title="Delete"
+                  />
                 </v-list>
               </v-menu>
-              <v-dialog
-                v-model="deleteDialog[item.metadata.name]"
-                width="auto"
-              >
+              <v-dialog v-model="deleteDialog[item.metadata.name]" width="auto">
                 <v-card title="Delete Confirmation">
                   <v-card-text>
-                    Remove Cron Job <b>{{ item?.metadata.name }}</b> from namespace <b>{{ item?.metadata.namespace }}</b>?
+                    Remove Cron Job <b>{{ item?.metadata.name }}</b> from
+                    namespace <b>{{ item?.metadata.namespace }}</b
+                    >?
                   </v-card-text>
                   <v-card-actions class="justify-end">
-                    <v-btn color="" @click="closeDeleteDialog(item.metadata.name)">Cancel</v-btn>
-                    <v-btn color="error" :loading="deleting[item.metadata.name]"
-                           @click="doDeleteCronJob(item.metadata.name)">Remove
+                    <v-btn
+                      color=""
+                      @click="closeDeleteDialog(item.metadata.name)"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      color="error"
+                      :loading="deleting[item.metadata.name]"
+                      @click="doDeleteCronJob(item.metadata.name)"
+                      >Remove
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -61,8 +80,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -94,8 +112,8 @@ const headers = [
   { title: "Active", align: "start", key: "status.active" },
   { title: "Last Schedule", align: "start", key: "status.lastScheduleTime" },
   { title: "Age", align: "start", key: "metadata.creationTimestamp" },
-  { title: "", align: "center", key: "_actions", sortable: false }
-] as InstanceType<typeof VDataTable>['headers'];
+  { title: "", align: "center", key: "_actions", sortable: false },
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistanceToNow(new Date(date));

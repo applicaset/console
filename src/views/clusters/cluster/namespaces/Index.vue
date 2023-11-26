@@ -5,10 +5,7 @@
       class="align-center justify-center"
       :persistent="true"
     >
-      <v-progress-circular
-        color="primary"
-        indeterminate
-      ></v-progress-circular>
+      <v-progress-circular color="primary" indeterminate></v-progress-circular>
     </v-overlay>
     <router-view v-if="initialized" />
   </div>
@@ -26,5 +23,7 @@ const clusterName = route.params.clusterName as string;
 
 const initialized = ref(false);
 
-loadNamespaces(axios, clusterName as string).then(() => initialized.value = true);
+loadNamespaces(axios, clusterName as string).then(
+  () => (initialized.value = true),
+);
 </script>

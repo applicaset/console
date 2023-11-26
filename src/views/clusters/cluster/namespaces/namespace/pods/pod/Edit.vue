@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Edit Pod: {{ podName }}
-        </h2>
+        <h2 class="text-h2">Edit Pod: {{ podName }}</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -15,14 +13,19 @@
               <v-textarea v-model="podYaml" auto-grow />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingPod">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingPod"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -44,8 +47,13 @@ const podName = route.params.podName as string;
 
 const dataStore = useDataStore();
 
-const pod = dataStore.getResource(clusterName, namespaceName, "v1", "Pod", podName);
-
+const pod = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "v1",
+  "Pod",
+  podName,
+);
 
 const podYaml = ref<string>(yaml.dump(pod));
 
@@ -55,10 +63,15 @@ async function updatePod() {
   updatingPod.value = true;
 
   try {
-    await replacePod(axios, clusterName, namespaceName, podName, yaml.load(podYaml.value) as Pod);
+    await replacePod(
+      axios,
+      clusterName,
+      namespaceName,
+      podName,
+      yaml.load(podYaml.value) as Pod,
+    );
   } finally {
     updatingPod.value = false;
   }
 }
-
 </script>

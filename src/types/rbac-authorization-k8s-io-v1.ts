@@ -1,22 +1,22 @@
 import { ObjectMeta } from "@/types/meta-v1";
 
-type PolicyRule = {}
+type PolicyRule = {};
 
 export type Role = {
-  apiVersion: 'rbac.authorization.k8s.io/v1'
-  kind: 'Role'
-  metadata: ObjectMeta
-  rules: PolicyRule[]
-}
+  apiVersion: "rbac.authorization.k8s.io/v1";
+  kind: "Role";
+  metadata: ObjectMeta;
+  rules: PolicyRule[];
+};
 
-type RoleRef = {}
+type RoleRef = {};
 
-type Subject = {}
+type Subject = {};
 
 export type RoleBinding = {
-  apiVersion: 'rbac.authorization.k8s.io/v1'
-  kind: 'RoleBinding'
-  metadata: ObjectMeta
-  roleRef: RoleRef
-  subjects: Subject[]
-}
+  apiVersion: "rbac.authorization.k8s.io/v1";
+  kind: "RoleBinding";
+  metadata: ObjectMeta;
+  roleRef: RoleRef;
+  subjects: Subject[];
+};

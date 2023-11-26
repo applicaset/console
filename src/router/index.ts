@@ -52,10 +52,8 @@ import IngressEdit from "@/views/clusters/cluster/namespaces/namespace/ingresses
 
 import PersistentVolumeClaims from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/Index.vue";
 import PersistentVolumeClaimsList from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/List.vue";
-import PersistentVolumeClaim
-  from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/persistentvolumeclaim/Index.vue";
-import PersistentVolumeClaimEdit
-  from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/persistentvolumeclaim/Edit.vue";
+import PersistentVolumeClaim from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/persistentvolumeclaim/Index.vue";
+import PersistentVolumeClaimEdit from "@/views/clusters/cluster/namespaces/namespace/persistentvolumeclaims/persistentvolumeclaim/Edit.vue";
 
 import Events from "@/views/clusters/cluster/namespaces/namespace/Events.vue";
 
@@ -99,7 +97,7 @@ const routes = [
           {
             path: "",
             name: "ClustersList",
-            component: ClustersList
+            component: ClustersList,
           },
           {
             path: ":clusterName",
@@ -110,7 +108,7 @@ const routes = [
               {
                 path: "dashboard",
                 name: "ClusterDashboard",
-                component: ClusterDashboard
+                component: ClusterDashboard,
               },
               {
                 path: "namespaces",
@@ -121,7 +119,7 @@ const routes = [
                   {
                     path: "",
                     name: "NamespacesList",
-                    component: NamespacesList
+                    component: NamespacesList,
                   },
                   {
                     path: ":namespaceName",
@@ -132,7 +130,7 @@ const routes = [
                       {
                         path: "dashboard",
                         name: "NamespaceDashboard",
-                        component: NamespaceDashboard
+                        component: NamespaceDashboard,
                       },
                       {
                         path: "applications",
@@ -143,9 +141,9 @@ const routes = [
                           {
                             path: "",
                             name: "ApplicationsList",
-                            component: ApplicationsList
-                          }
-                        ]
+                            component: ApplicationsList,
+                          },
+                        ],
                       },
                       {
                         path: "pods",
@@ -156,7 +154,7 @@ const routes = [
                           {
                             path: "",
                             name: "PodsList",
-                            component: PodsList
+                            component: PodsList,
                           },
                           {
                             path: ":podName",
@@ -166,11 +164,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "PodEdit",
-                                component: PodEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: PodEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "deployments",
@@ -181,7 +179,7 @@ const routes = [
                           {
                             path: "",
                             name: "DeploymentsList",
-                            component: DeploymentsList
+                            component: DeploymentsList,
                           },
                           {
                             path: ":deploymentName",
@@ -191,11 +189,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "DeploymentEdit",
-                                component: DeploymentEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: DeploymentEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "statefulsets",
@@ -206,7 +204,7 @@ const routes = [
                           {
                             path: "",
                             name: "StatefulSetsList",
-                            component: StatefulSetsList
+                            component: StatefulSetsList,
                           },
                           {
                             path: ":statefulSetName",
@@ -216,11 +214,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "StatefulSetEdit",
-                                component: StatefulSetEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: StatefulSetEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "jobs",
@@ -231,7 +229,7 @@ const routes = [
                           {
                             path: "",
                             name: "JobsList",
-                            component: JobsList
+                            component: JobsList,
                           },
                           {
                             path: ":jobName",
@@ -241,11 +239,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "JobEdit",
-                                component: JobEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: JobEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "cronjobs",
@@ -256,7 +254,7 @@ const routes = [
                           {
                             path: "",
                             name: "CronJobsList",
-                            component: CronJobsList
+                            component: CronJobsList,
                           },
                           {
                             path: ":cronJobName",
@@ -266,11 +264,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "CronJobEdit",
-                                component: CronJobEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: CronJobEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "configmaps",
@@ -281,7 +279,7 @@ const routes = [
                           {
                             path: "",
                             name: "ConfigMapsList",
-                            component: ConfigMapsList
+                            component: ConfigMapsList,
                           },
                           {
                             path: ":configMapName",
@@ -291,11 +289,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "ConfigMapEdit",
-                                component: ConfigMapEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: ConfigMapEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "secrets",
@@ -306,7 +304,7 @@ const routes = [
                           {
                             path: "",
                             name: "SecretsList",
-                            component: SecretsList
+                            component: SecretsList,
                           },
                           {
                             path: ":secretName",
@@ -316,11 +314,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "SecretEdit",
-                                component: SecretEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: SecretEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "services",
@@ -331,7 +329,7 @@ const routes = [
                           {
                             path: "",
                             name: "ServicesList",
-                            component: ServicesList
+                            component: ServicesList,
                           },
                           {
                             path: ":serviceName",
@@ -341,11 +339,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "ServiceEdit",
-                                component: ServiceEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: ServiceEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "ingresses",
@@ -356,7 +354,7 @@ const routes = [
                           {
                             path: "",
                             name: "IngressesList",
-                            component: IngressesList
+                            component: IngressesList,
                           },
                           {
                             path: ":ingressName",
@@ -366,11 +364,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "IngressEdit",
-                                component: IngressEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: IngressEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "persistentvolumeclaims",
@@ -381,7 +379,7 @@ const routes = [
                           {
                             path: "",
                             name: "PersistentVolumeClaimsList",
-                            component: PersistentVolumeClaimsList
+                            component: PersistentVolumeClaimsList,
                           },
                           {
                             path: ":persistentVolumeClaimName",
@@ -391,16 +389,16 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "PersistentVolumeClaimEdit",
-                                component: PersistentVolumeClaimEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: PersistentVolumeClaimEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "events",
                         name: "Events",
-                        component: Events
+                        component: Events,
                       },
                       {
                         path: "serviceaccounts",
@@ -411,7 +409,7 @@ const routes = [
                           {
                             path: "",
                             name: "ServiceAccountsList",
-                            component: ServiceAccountsList
+                            component: ServiceAccountsList,
                           },
                           {
                             path: ":serviceAccountName",
@@ -421,11 +419,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "ServiceAccountEdit",
-                                component: ServiceAccountEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: ServiceAccountEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "roles",
@@ -436,7 +434,7 @@ const routes = [
                           {
                             path: "",
                             name: "RolesList",
-                            component: RolesList
+                            component: RolesList,
                           },
                           {
                             path: ":roleName",
@@ -446,11 +444,11 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "RoleEdit",
-                                component: RoleEdit
-                              }
-                            ]
-                          }
-                        ]
+                                component: RoleEdit,
+                              },
+                            ],
+                          },
+                        ],
                       },
                       {
                         path: "rolebindings",
@@ -461,7 +459,7 @@ const routes = [
                           {
                             path: "",
                             name: "RoleBindingsList",
-                            component: RoleBindingsList
+                            component: RoleBindingsList,
                           },
                           {
                             path: ":roleBindingName",
@@ -471,27 +469,27 @@ const routes = [
                               {
                                 path: "edit",
                                 name: "RoleBindingEdit",
-                                component: RoleBindingEdit
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+                                component: RoleBindingEdit,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;

@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Edit Service: {{ serviceName }}
-        </h2>
+        <h2 class="text-h2">Edit Service: {{ serviceName }}</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -15,14 +13,19 @@
               <v-textarea v-model="serviceYaml" auto-grow />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingService">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingService"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -44,8 +47,13 @@ const serviceName = route.params.serviceName as string;
 
 const dataStore = useDataStore();
 
-const service = dataStore.getResource(clusterName, namespaceName, "v1", "Service", serviceName);
-
+const service = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "v1",
+  "Service",
+  serviceName,
+);
 
 const serviceYaml = ref<string>(yaml.dump(service));
 
@@ -55,10 +63,15 @@ async function updateService() {
   updatingService.value = true;
 
   try {
-    await replaceService(axios, clusterName, namespaceName, serviceName, yaml.load(serviceYaml.value) as Service);
+    await replaceService(
+      axios,
+      clusterName,
+      namespaceName,
+      serviceName,
+      yaml.load(serviceYaml.value) as Service,
+    );
   } finally {
     updatingService.value = false;
   }
 }
-
 </script>

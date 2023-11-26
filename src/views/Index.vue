@@ -13,7 +13,11 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item prepend-icon="mdi-logout" title="Sign Out" @click="signOut" />
+            <v-list-item
+              prepend-icon="mdi-logout"
+              title="Sign Out"
+              @click="signOut"
+            />
           </v-list>
         </v-menu>
       </v-toolbar-items>
@@ -28,16 +32,16 @@ import keycloak from "@/auth/keycloak";
 import gravatar from "gravatar";
 import { ref } from "vue";
 
-const avatar = ref('')
-const userTitle = ref('')
+const avatar = ref("");
+const userTitle = ref("");
 
-keycloak.loadUserProfile().then(()=>{
-  userTitle.value = `${keycloak.profile?.firstName} ${keycloak.profile?.lastName}`
+keycloak.loadUserProfile().then(() => {
+  userTitle.value = `${keycloak.profile?.firstName} ${keycloak.profile?.lastName}`;
   if (keycloak.profile?.email)
-    avatar.value = gravatar.url(keycloak.profile?.email, {s:"40"}, true)
-})
+    avatar.value = gravatar.url(keycloak.profile?.email, { s: "40" }, true);
+});
 
 function signOut() {
-  keycloak.logout()
+  keycloak.logout();
 }
 </script>

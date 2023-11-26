@@ -1,13 +1,13 @@
 import { ObjectMeta } from "@/types/meta-v1";
 
-type IngressSpec = {}
+type IngressSpec = {};
 
-type IngressStatus = {}
+type IngressStatus = {};
 
 export type Ingress = {
-  apiVersion: 'networking.k8s.io/v1'
-  kind: 'Ingress'
-  metadata: ObjectMeta
-  spec: IngressSpec
-  readonly status?: IngressStatus
-}
+  apiVersion: "networking.k8s.io/v1";
+  kind: "Ingress";
+  metadata: ObjectMeta;
+  spec: IngressSpec;
+  readonly status?: IngressStatus;
+};

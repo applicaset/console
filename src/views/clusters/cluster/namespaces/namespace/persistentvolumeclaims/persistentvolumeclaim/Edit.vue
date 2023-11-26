@@ -12,17 +12,25 @@
         <v-form @submit.prevent="updatePersistentVolumeClaim">
           <v-card>
             <v-card-text>
-              <v-textarea v-mersistentVolumeClaimel="persistentVolumeClaimYaml" auto-grow />
+              <v-textarea
+                v-mersistentVolumeClaimel="persistentVolumeClaimYaml"
+                auto-grow
+              />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingPersistentVolumeClaim">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingPersistentVolumeClaim"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -40,12 +48,18 @@ const axios: any = inject("axios");
 
 const clusterName = route.params.clusterName as string;
 const namespaceName = route.params.namespaceName as string;
-const persistentVolumeClaimName = route.params.persistentVolumeClaimName as string;
+const persistentVolumeClaimName = route.params
+  .persistentVolumeClaimName as string;
 
 const dataStore = useDataStore();
 
-const persistentVolumeClaim = dataStore.getResource(clusterName, namespaceName, "v1", "PersistentVolumeClaim", persistentVolumeClaimName);
-
+const persistentVolumeClaim = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "v1",
+  "PersistentVolumeClaim",
+  persistentVolumeClaimName,
+);
 
 const persistentVolumeClaimYaml = ref<string>(yaml.dump(persistentVolumeClaim));
 
@@ -55,10 +69,15 @@ async function updatePersistentVolumeClaim() {
   updatingPersistentVolumeClaim.value = true;
 
   try {
-    await replacePersistentVolumeClaim(axios, clusterName, namespaceName, persistentVolumeClaimName, yaml.load(persistentVolumeClaimYaml.value) as PersistentVolumeClaim);
+    await replacePersistentVolumeClaim(
+      axios,
+      clusterName,
+      namespaceName,
+      persistentVolumeClaimName,
+      yaml.load(persistentVolumeClaimYaml.value) as PersistentVolumeClaim,
+    );
   } finally {
     updatingPersistentVolumeClaim.value = false;
   }
 }
-
 </script>

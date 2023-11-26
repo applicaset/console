@@ -1,19 +1,29 @@
 <template>
   <v-container>
-    <v-data-iterator :items="getList(clusterName,'v1','Namespace')">
+    <v-data-iterator :items="getList(clusterName, 'v1', 'Namespace')">
       <template #header>
         <v-toolbar :flat="true" color="transparent">
-          <v-toolbar-title>
-            Namespaces
-          </v-toolbar-title>
-          <v-btn color="primary" prepend-icon="mdi-plus" :disabled="!canCreateNamespace">
+          <v-toolbar-title> Namespaces </v-toolbar-title>
+          <v-btn
+            color="primary"
+            prepend-icon="mdi-plus"
+            :disabled="!canCreateNamespace"
+          >
             Add
-            <v-dialog v-model="addNamespaceDialog" activator="parent" max-width="480">
+            <v-dialog
+              v-model="addNamespaceDialog"
+              activator="parent"
+              max-width="480"
+            >
               <v-form @submit.prevent="createNamespace">
                 <v-card>
                   <v-card-title>Add Namespace</v-card-title>
                   <v-card-text>
-                    <v-text-field label="Name" v-model.trim="newNamespace.metadata.name" :autofocus="true" />
+                    <v-text-field
+                      label="Name"
+                      v-model.trim="newNamespace.metadata.name"
+                      :autofocus="true"
+                    />
                   </v-card-text>
                   <v-card-actions>
                     <v-btn type="submit" :loading="creatingNamespace">
@@ -28,8 +38,21 @@
       </template>
       <template #default="{ items }">
         <v-row>
-          <v-col v-for="item in items" :key="item.raw.metadata.name" cols="12" sm="6" md="4" lg="3" xl="2">
-            <v-card :to="{name: 'Namespace', params:{namespaceName: item.raw.metadata.name}}">
+          <v-col
+            v-for="item in items"
+            :key="item.raw.metadata.name"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+            xl="2"
+          >
+            <v-card
+              :to="{
+                name: 'Namespace',
+                params: { namespaceName: item.raw.metadata.name },
+              }"
+            >
               <v-card-text>
                 <v-list>
                   <v-list-item>
@@ -47,7 +70,9 @@
                   <v-list-item>
                     <v-list-item-subtitle>Tenant</v-list-item-subtitle>
                     <v-list-item-title>
-                      {{ item.raw.metadata.labels["capsule.clastix.io/tenant"] }}
+                      {{
+                        item.raw.metadata.labels["capsule.clastix.io/tenant"]
+                      }}
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -86,9 +111,9 @@ const newNamespaceValue: Namespace = {
   apiVersion: "v1",
   kind: "Namespace",
   metadata: {
-    name: ""
+    name: "",
   },
-  spec: {}
+  spec: {},
 };
 
 let newNamespace = ref<Namespace>(newNamespaceValue);
@@ -97,8 +122,8 @@ const canCreateNamespace = ref(false);
 
 canI(axios, clusterName, {
   verb: "create",
-  resource: "namespaces"
-}).then((allowed: boolean) => canCreateNamespace.value = allowed);
+  resource: "namespaces",
+}).then((allowed: boolean) => (canCreateNamespace.value = allowed));
 
 async function createNamespace() {
   creatingNamespace.value = true;
@@ -106,7 +131,9 @@ async function createNamespace() {
   try {
     await axios.post(`${clusterUrl}/api/v1/namespaces`, newNamespace.value);
     newNamespace.value = newNamespaceValue;
-    console.log(`Namespace '${newNamespace.value.metadata.name}' created successfully.`);
+    console.log(
+      `Namespace '${newNamespace.value.metadata.name}' created successfully.`,
+    );
     addNamespaceDialog.value = false;
   } finally {
     creatingNamespace.value = false;

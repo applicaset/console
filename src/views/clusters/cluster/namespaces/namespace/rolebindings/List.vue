@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Role Bindings
-        </h2>
+        <h2 class="text-h2">Role Bindings</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -12,16 +10,29 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'rbac.authorization.k8s.io/v1','RoleBinding') as RoleBinding[]"
+            :items="
+              getNamespacedList(
+                clusterName,
+                namespaceName,
+                'rbac.authorization.k8s.io/v1',
+                'RoleBinding',
+              ) as RoleBinding[]
+            "
             multi-sort
           >
-            <template #item.subjects="{value}">
-              <v-chip v-for="subject in value" :key="subject.name" class="mx-1" :prepend-icon="subjectKindIcon(subject.kind)" :text="subject.name"/>
+            <template #item.subjects="{ value }">
+              <v-chip
+                v-for="subject in value"
+                :key="subject.name"
+                class="mx-1"
+                :prepend-icon="subjectKindIcon(subject.kind)"
+                :text="subject.name"
+              />
             </template>
-            <template #item.metadata.creationTimestamp="{value}">
+            <template #item.metadata.creationTimestamp="{ value }">
               {{ formatDate(value) }}
             </template>
-            <template #item._actions="{item}">
+            <template #item._actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn icon variant="text" color="" v-bind="props">
@@ -32,23 +43,37 @@
                   <v-list-item
                     prepend-icon="mdi-pencil"
                     title="Edit"
-                    :to="{name:'RoleBindingEdit', params:{roleBindingName:item.metadata.name}}"
+                    :to="{
+                      name: 'RoleBindingEdit',
+                      params: { roleBindingName: item.metadata.name },
+                    }"
                   />
-                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
+                  <v-list-item
+                    base-color="red"
+                    @click="openDeleteDialog(item.metadata.name)"
+                    prepend-icon="mdi-delete"
+                    title="Delete"
+                  />
                 </v-list>
               </v-menu>
-              <v-dialog
-                v-model="deleteDialog[item.metadata.name]"
-                width="auto"
-              >
+              <v-dialog v-model="deleteDialog[item.metadata.name]" width="auto">
                 <v-card title="Delete Confirmation">
                   <v-card-text>
-                    Remove RoleBinding <b>{{ item?.metadata.name }}</b> from namespace <b>{{ item?.metadata.namespace }}</b>?
+                    Remove RoleBinding <b>{{ item?.metadata.name }}</b> from
+                    namespace <b>{{ item?.metadata.namespace }}</b
+                    >?
                   </v-card-text>
                   <v-card-actions class="justify-end">
-                    <v-btn color="" @click="closeDeleteDialog(item.metadata.name)">Cancel</v-btn>
-                    <v-btn color="error" :loading="deleting[item.metadata.name]"
-                           @click="doDeleteRoleBinding(item.metadata.name)">Remove
+                    <v-btn
+                      color=""
+                      @click="closeDeleteDialog(item.metadata.name)"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      color="error"
+                      :loading="deleting[item.metadata.name]"
+                      @click="doDeleteRoleBinding(item.metadata.name)"
+                      >Remove
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -58,8 +83,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -88,8 +112,8 @@ const headers = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Bindings", align: "start", key: "subjects" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
-  { title: "", align: "center", key: "_actions", sortable: false }
-] as InstanceType<typeof VDataTable>['headers'];
+  { title: "", align: "center", key: "_actions", sortable: false },
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistanceToNow(new Date(date));
@@ -98,13 +122,13 @@ function formatDate(date: string): string {
 function subjectKindIcon(kind: string): string {
   switch (kind) {
     case "User":
-      return "mdi-account-box"
+      return "mdi-account-box";
     case "Group":
-      return "mdi-account-group"
+      return "mdi-account-group";
     case "ServiceAccount":
-      return "mdi-shield-account"
+      return "mdi-shield-account";
     default:
-      return ""
+      return "";
   }
 }
 

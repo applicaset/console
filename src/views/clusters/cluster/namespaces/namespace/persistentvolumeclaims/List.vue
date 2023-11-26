@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Persistent Volume Claims
-        </h2>
+        <h2 class="text-h2">Persistent Volume Claims</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -12,18 +10,25 @@
         <v-card>
           <v-data-table-virtual
             :headers="headers"
-            :items="getNamespacedList(clusterName,namespaceName,'v1','PersistentVolumeClaim') as PersistentVolumeClaim[]"
+            :items="
+              getNamespacedList(
+                clusterName,
+                namespaceName,
+                'v1',
+                'PersistentVolumeClaim',
+              ) as PersistentVolumeClaim[]
+            "
             multi-sort
           >
-            <template #item.metadata.creationTimestamp="{value}">
+            <template #item.metadata.creationTimestamp="{ value }">
               {{ formatDate(value) }}
             </template>
-            <template #item.status.phase="{value}">
+            <template #item.status.phase="{ value }">
               <v-chip :color="phaseColor(value)">
                 {{ value }}
               </v-chip>
             </template>
-            <template #item._actions="{item}">
+            <template #item._actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn icon variant="text" color="" v-bind="props">
@@ -34,23 +39,38 @@
                   <v-list-item
                     prepend-icon="mdi-pencil"
                     title="Edit"
-                    :to="{name:'PersistentVolumeClaimEdit', params:{persistentVolumeClaimName:item.metadata.name}}"
+                    :to="{
+                      name: 'PersistentVolumeClaimEdit',
+                      params: { persistentVolumeClaimName: item.metadata.name },
+                    }"
                   />
-                  <v-list-item base-color="red" @click="openDeleteDialog(item.metadata.name)" prepend-icon="mdi-delete" title="Delete" />
+                  <v-list-item
+                    base-color="red"
+                    @click="openDeleteDialog(item.metadata.name)"
+                    prepend-icon="mdi-delete"
+                    title="Delete"
+                  />
                 </v-list>
               </v-menu>
-              <v-dialog
-                v-model="deleteDialog[item.metadata.name]"
-                width="auto"
-              >
+              <v-dialog v-model="deleteDialog[item.metadata.name]" width="auto">
                 <v-card title="Delete Confirmation">
                   <v-card-text>
-                    Remove Persistent Volume Claim <b>{{ item?.metadata.name }}</b> from namespace <b>{{ item?.metadata.namespace }}</b>?
+                    Remove Persistent Volume Claim
+                    <b>{{ item?.metadata.name }}</b> from namespace
+                    <b>{{ item?.metadata.namespace }}</b
+                    >?
                   </v-card-text>
                   <v-card-actions class="justify-end">
-                    <v-btn color="" @click="closeDeleteDialog(item.metadata.name)">Cancel</v-btn>
-                    <v-btn color="error" :loading="deleting[item.metadata.name]"
-                           @click="doDeletePersistentVolumeClaim(item.metadata.name)">Remove
+                    <v-btn
+                      color=""
+                      @click="closeDeleteDialog(item.metadata.name)"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      color="error"
+                      :loading="deleting[item.metadata.name]"
+                      @click="doDeletePersistentVolumeClaim(item.metadata.name)"
+                      >Remove
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -60,8 +80,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -92,8 +111,8 @@ const headers = [
   { title: "Size", align: "start", key: "spec.resources.requests.storage" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "Status", align: "center", key: "status.phase" },
-  { title: "", align: "center", key: "_actions", sortable: false }
-] as InstanceType<typeof VDataTable>['headers'];
+  { title: "", align: "center", key: "_actions", sortable: false },
+] as InstanceType<typeof VDataTable>["headers"];
 
 function formatDate(date: string): string {
   return formatDistanceToNow(new Date(date));
@@ -101,11 +120,11 @@ function formatDate(date: string): string {
 function phaseColor(phase: any): string {
   switch (phase) {
     case "Pending":
-      return "warning"
+      return "warning";
     case "Bound":
-      return "success"
+      return "success";
     default:
-      return ""
+      return "";
   }
 }
 

@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h2 class="text-h2">
-          Edit Job: {{ jobName }}
-        </h2>
+        <h2 class="text-h2">Edit Job: {{ jobName }}</h2>
       </v-col>
     </v-row>
     <v-row>
@@ -15,14 +13,19 @@
               <v-textarea v-model="jobYaml" auto-grow />
             </v-card-text>
             <v-card-actions>
-              <v-btn type="submit" variant="tonal" color="primary" :loading="updatingJob">Update</v-btn>
+              <v-btn
+                type="submit"
+                variant="tonal"
+                color="primary"
+                :loading="updatingJob"
+                >Update</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>
 
@@ -44,8 +47,13 @@ const jobName = route.params.jobName as string;
 
 const dataStore = useDataStore();
 
-const job = dataStore.getResource(clusterName, namespaceName, "batch/v1", "Job", jobName);
-
+const job = dataStore.getResource(
+  clusterName,
+  namespaceName,
+  "batch/v1",
+  "Job",
+  jobName,
+);
 
 const jobYaml = ref<string>(yaml.dump(job));
 
@@ -55,10 +63,15 @@ async function updateJob() {
   updatingJob.value = true;
 
   try {
-    await replaceJob(axios, clusterName, namespaceName, jobName, yaml.load(jobYaml.value) as Job);
+    await replaceJob(
+      axios,
+      clusterName,
+      namespaceName,
+      jobName,
+      yaml.load(jobYaml.value) as Job,
+    );
   } finally {
     updatingJob.value = false;
   }
 }
-
 </script>

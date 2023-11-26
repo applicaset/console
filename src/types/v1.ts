@@ -1,96 +1,96 @@
-import {ObjectMeta} from "@/types/meta-v1";
+import { ObjectMeta } from "@/types/meta-v1";
 
 type NamespaceSpec = {
-  finalizers?: string[]
-}
+  finalizers?: string[];
+};
 
-type NamespaceCondition = {}
+type NamespaceCondition = {};
 
 type NamespaceStatus = {
-  conditions: NamespaceCondition[]
-  phase: string
-}
+  conditions: NamespaceCondition[];
+  phase: string;
+};
 
 export type Namespace = {
-  apiVersion: 'v1'
-  kind: 'Namespace'
-  metadata: ObjectMeta
-  spec: NamespaceSpec
-  readonly status?: NamespaceStatus
-}
+  apiVersion: "v1";
+  kind: "Namespace";
+  metadata: ObjectMeta;
+  spec: NamespaceSpec;
+  readonly status?: NamespaceStatus;
+};
 
-type PodSpec = {}
+type PodSpec = {};
 
 export type PodStatus = {
-  phase: 'Pending'|'Running'|'Succeeded'|'Failed'|'Unknown'
-}
+  phase: "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
+};
 
 export type Pod = {
-  apiVersion: 'v1'
-  kind: 'Pod'
-  metadata: ObjectMeta
-  spec: PodSpec
-  readonly status?: PodStatus
-}
+  apiVersion: "v1";
+  kind: "Pod";
+  metadata: ObjectMeta;
+  spec: PodSpec;
+  readonly status?: PodStatus;
+};
 
-type ConfigMapSpec = {}
+type ConfigMapSpec = {};
 
-type ConfigMapStatus = {}
+type ConfigMapStatus = {};
 
 export type ConfigMap = {
-  apiVersion: 'v1'
-  kind: 'ConfigMap'
-  metadata: ObjectMeta
-  spec: ConfigMapSpec
-  readonly status?: ConfigMapStatus
-}
+  apiVersion: "v1";
+  kind: "ConfigMap";
+  metadata: ObjectMeta;
+  spec: ConfigMapSpec;
+  readonly status?: ConfigMapStatus;
+};
 
-type ServiceSpec = {}
+type ServiceSpec = {};
 
-type ServiceStatus = {}
+type ServiceStatus = {};
 
 export type Service = {
-  apiVersion: 'v1'
-  kind: 'Service'
-  metadata: ObjectMeta
-  spec: ServiceSpec
-  readonly status?: ServiceStatus
-}
+  apiVersion: "v1";
+  kind: "Service";
+  metadata: ObjectMeta;
+  spec: ServiceSpec;
+  readonly status?: ServiceStatus;
+};
 
-type ServiceAccountSpec = {}
+type ServiceAccountSpec = {};
 
-type ServiceAccountStatus = {}
+type ServiceAccountStatus = {};
 
 export type ServiceAccount = {
-  apiVersion: 'v1'
-  kind: 'ServiceAccount'
-  metadata: ObjectMeta
-  spec: ServiceAccountSpec
-  readonly status?: ServiceAccountStatus
-}
+  apiVersion: "v1";
+  kind: "ServiceAccount";
+  metadata: ObjectMeta;
+  spec: ServiceAccountSpec;
+  readonly status?: ServiceAccountStatus;
+};
 
-type SecretSpec = {}
+type SecretSpec = {};
 
-type SecretStatus = {}
+type SecretStatus = {};
 
 export type Secret = {
-  apiVersion: 'v1'
-  kind: 'Secret'
-  metadata: ObjectMeta
-  spec: SecretSpec
-  readonly status?: SecretStatus
-}
+  apiVersion: "v1";
+  kind: "Secret";
+  metadata: ObjectMeta;
+  spec: SecretSpec;
+  readonly status?: SecretStatus;
+};
 
-type PersistentVolumeClaimSpec = {}
+type PersistentVolumeClaimSpec = {};
 
-type PersistentVolumeClaimStatus = {}
+type PersistentVolumeClaimStatus = {};
 
 export type PersistentVolumeClaim = {
-  apiVersion: 'v1'
-  kind: 'PersistentVolumeClaim'
-  metadata: ObjectMeta
-  spec: PersistentVolumeClaimSpec
-  readonly status?: PersistentVolumeClaimStatus
-}
+  apiVersion: "v1";
+  kind: "PersistentVolumeClaim";
+  metadata: ObjectMeta;
+  spec: PersistentVolumeClaimSpec;
+  readonly status?: PersistentVolumeClaimStatus;
+};
 
-export type ObjectReference = {}
+export type ObjectReference = {};

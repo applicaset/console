@@ -1,16 +1,22 @@
 <template>
   <v-container>
     <v-toolbar :flat="true" color="transparent">
-      <v-toolbar-title>
-        Clusters
-      </v-toolbar-title>
+      <v-toolbar-title> Clusters </v-toolbar-title>
     </v-toolbar>
     <v-row>
-      <v-col v-for="(val, key) in getClusters" :key="key" cols="12" sm="6" md="4" lg="3" xl="2">
+      <v-col
+        v-for="(val, key) in getClusters"
+        :key="key"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
+        xl="2"
+      >
         <v-card
           :title="`${key}`"
           :subtitle="val"
-          :to="{name: 'Cluster', params:{clusterName: key}}"
+          :to="{ name: 'Cluster', params: { clusterName: key } }"
         />
       </v-col>
     </v-row>
@@ -30,5 +36,4 @@ const clusterNames = Object.keys(getClusters.value);
 if (clusterNames.length === 1) {
   router.push({ name: "Cluster", params: { clusterName: clusterNames[0] } });
 }
-
 </script>

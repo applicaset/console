@@ -10,7 +10,13 @@ export function pluralFromKind(kind: string): string {
   }
 }
 
-export async function loadByNamespaceAPIVersionKind(axios: Axios, clusterName: string, namespaceName: string, apiVersion: string, kind: string) {
+export async function loadByNamespaceAPIVersionKind(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -24,10 +30,22 @@ export async function loadByNamespaceAPIVersionKind(axios: Axios, clusterName: s
 
   const res = await axios.get(url);
 
-  dataStore.setNamespacedList(clusterName, namespaceName, apiVersion, kind, res.data.items);
+  dataStore.setNamespacedList(
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+    res.data.items,
+  );
 }
 
-export async function createByAPIVersionKind(axios: Axios, clusterName: string, apiVersion: string, kind: string, body: any) {
+export async function createByAPIVersionKind(
+  axios: Axios,
+  clusterName: string,
+  apiVersion: string,
+  kind: string,
+  body: any,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -36,15 +54,22 @@ export async function createByAPIVersionKind(axios: Axios, clusterName: string, 
 
   let url = `${clusterUrl}/apis/${apiVersion}/${plural}`;
 
-  if (apiVersion == "v1")
-    url = `${clusterUrl}/api/v1/${plural}`;
+  if (apiVersion == "v1") url = `${clusterUrl}/api/v1/${plural}`;
 
   const res = await axios.post(url, body);
 
   return res.data;
 }
 
-export async function createByNamespaceAPIVersionKindName(axios: Axios, clusterName: string, namespaceName: string, apiVersion: string, kind: string, name: string, body: any) {
+export async function createByNamespaceAPIVersionKindName(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+  name: string,
+  body: any,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -58,10 +83,24 @@ export async function createByNamespaceAPIVersionKindName(axios: Axios, clusterN
 
   await axios.post(url, body);
 
-  await loadByNamespaceAPIVersionKind(axios, clusterName, namespaceName, apiVersion, kind);
+  await loadByNamespaceAPIVersionKind(
+    axios,
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+  );
 }
 
-export async function patchByNamespaceAPIVersionKindName(axios: Axios, clusterName: string, namespaceName: string, apiVersion: string, kind: string, name: string, body: any) {
+export async function patchByNamespaceAPIVersionKindName(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+  name: string,
+  body: any,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -75,10 +114,24 @@ export async function patchByNamespaceAPIVersionKindName(axios: Axios, clusterNa
 
   await axios.patch(url, body);
 
-  await loadByNamespaceAPIVersionKind(axios, clusterName, namespaceName, apiVersion, kind);
+  await loadByNamespaceAPIVersionKind(
+    axios,
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+  );
 }
 
-export async function replaceByNamespaceAPIVersionKindName(axios: Axios, clusterName: string, namespaceName: string, apiVersion: string, kind: string, name: string, body: any) {
+export async function replaceByNamespaceAPIVersionKindName(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+  name: string,
+  body: any,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -92,10 +145,23 @@ export async function replaceByNamespaceAPIVersionKindName(axios: Axios, cluster
 
   await axios.put(url, body);
 
-  await loadByNamespaceAPIVersionKind(axios, clusterName, namespaceName, apiVersion, kind);
+  await loadByNamespaceAPIVersionKind(
+    axios,
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+  );
 }
 
-export async function deleteByNamespaceAPIVersionKindName(axios: Axios, clusterName: string, namespaceName: string, apiVersion: string, kind: string, name: string) {
+export async function deleteByNamespaceAPIVersionKindName(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+  name: string,
+) {
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -109,5 +175,11 @@ export async function deleteByNamespaceAPIVersionKindName(axios: Axios, clusterN
 
   await axios.delete(url);
 
-  await loadByNamespaceAPIVersionKind(axios, clusterName, namespaceName, apiVersion, kind);
+  await loadByNamespaceAPIVersionKind(
+    axios,
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+  );
 }
