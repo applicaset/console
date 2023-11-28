@@ -19,6 +19,7 @@
               ) as Job[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.spec.completion="{ item }">
               {{ `${item.status?.succeeded}/${item.spec.completions}` }}
@@ -107,7 +108,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceStrict, formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Job } from "@/types/batch-v1";
 import { deleteJob } from "@/api/batch-v1";
@@ -123,17 +124,21 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Completion", align: "start", key: "spec.completion" },
   { title: "Duration", align: "start", key: "status.completionTime" },
   { title: "Age", align: "start", key: "metadata.creationTimestamp" },
   { title: "Conditions", align: "start", key: "status.conditions" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 
 function timeDiff(start: string, end: string) {

@@ -19,6 +19,7 @@
               ) as PersistentVolumeClaim[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.metadata.creationTimestamp="{ value }">
               {{ formatDate(value) }}
@@ -89,7 +90,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
 import { PersistentVolumeClaim } from "@/types/v1";
 import { deletePersistentVolumeClaim } from "@/api/v1";
@@ -105,17 +106,21 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Storage Class", align: "start", key: "spec.storageClassName" },
   { title: "Size", align: "start", key: "spec.resources.requests.storage" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "Status", align: "center", key: "status.phase" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 function phaseColor(phase: any): string {
   switch (phase) {

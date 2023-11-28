@@ -19,6 +19,7 @@
               ) as CronJob[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.status.active="{ value }">
               {{ value?.length || 0 }}
@@ -89,7 +90,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
 import { CronJob } from "@/types/batch-v1";
 import { deleteCronJob } from "@/api/batch-v1";
@@ -105,7 +106,7 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Schedule", align: "start", key: "spec.schedule", sortable: false },
   { title: "Suspend", align: "start", key: "spec.suspend" },
@@ -113,10 +114,14 @@ const headers = [
   { title: "Last Schedule", align: "start", key: "status.lastScheduleTime" },
   { title: "Age", align: "start", key: "metadata.creationTimestamp" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 const deleteDialog = ref<{ [name: string]: boolean }>({});
 const deleting = ref<{ [name: string]: boolean }>({});

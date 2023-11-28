@@ -19,6 +19,7 @@
               ) as ConfigMap[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.data="{ value }">
               {{ Object.keys(value).join(", ") }}
@@ -60,8 +61,8 @@
                   </v-card-text>
                   <v-card-actions class="justify-end">
                     <v-btn color="" @click="closeDialog(item.metadata.name)"
-                      >Cancel</v-btn
-                    >
+                      >Cancel
+                    </v-btn>
                     <v-btn
                       color="error"
                       :loading="deleting[item.metadata.name]"
@@ -76,7 +77,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row> </v-row>
+    <v-row></v-row>
   </v-container>
 </template>
 
@@ -85,7 +86,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
 import { ConfigMap } from "@/types/v1";
 import { deleteConfigMap } from "@/api/v1";
@@ -101,15 +102,19 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Keys", align: "start", key: "data" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 
 const dialog = ref<{ [name: string]: boolean }>({});

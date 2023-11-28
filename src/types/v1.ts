@@ -1,4 +1,4 @@
-import { ObjectMeta } from "@/types/meta-v1";
+import { ObjectMeta, Time } from "@/types/meta-v1";
 
 type NamespaceSpec = {
   finalizers?: string[];
@@ -21,7 +21,24 @@ export type Namespace = {
 
 type PodSpec = {};
 
+type ContainerStateRunning = {};
+type ContainerStateTerminated = {};
+type ContainerStateWaiting = {};
+
+type ContainerState = {
+  running: ContainerStateRunning;
+  terminated: ContainerStateTerminated;
+  waiting: ContainerStateWaiting;
+};
+
+export type ContainerStatus = {
+  state: ContainerState;
+};
+
 export type PodStatus = {
+  containerStatuses: ContainerStatus[];
+  ephemeralContainerStatuses: ContainerStatus[];
+  initContainerStatuses: ContainerStatus[];
   phase: "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
 };
 
@@ -93,4 +110,24 @@ export type PersistentVolumeClaim = {
   readonly status?: PersistentVolumeClaimStatus;
 };
 
-export type ObjectReference = {};
+export type ObjectReference = {
+  apiVersion: string;
+  fieldPath: string;
+  kind: string;
+  name: string;
+  namespace: string;
+  resourceVersion: string;
+  uid: string;
+};
+
+export type Event = {
+  apiVersion: "v1";
+  kind: "Event";
+  metadata: ObjectMeta;
+  action: string;
+  involvedObject: ObjectReference;
+  lastTimestamp: Time;
+  message: string;
+  reason: string;
+  type: string;
+};

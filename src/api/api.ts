@@ -37,6 +37,81 @@ export async function loadByNamespaceAPIVersionKind(
     kind,
     res.data.items,
   );
+
+  fetch(
+    `${url}?resourceVersion=${res.data.metadata.resourceVersion}&watch=true`,
+    {
+      headers: {
+        //@ts-ignore
+        Authorization: axios.defaults.headers["Authorization"],
+      },
+    },
+  ).then((response) => {
+    if (response.ok && response.body) {
+      const reader = response.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader();
+      const readStream = (): Promise<any> =>
+        reader.read().then(({ value, done }) => {
+          if (done) {
+            reader.cancel();
+            return Promise.resolve();
+          }
+
+          // parse the data
+          const data = /{.*}/.exec(value);
+          if (!data || !data[0]) {
+            return readStream();
+          }
+
+          const res = JSON.parse(data[0]);
+
+          switch (res.type) {
+            case "ADDED":
+              dataStore.addToNamespacedList(
+                clusterName,
+                namespaceName,
+                apiVersion,
+                kind,
+                res.object,
+              );
+
+              break;
+            case "DELETED":
+              dataStore.removeFromNamespacedList(
+                clusterName,
+                namespaceName,
+                apiVersion,
+                kind,
+                res.object,
+              );
+
+              break;
+            case "MODIFIED":
+              dataStore.replaceInNamespacedList(
+                clusterName,
+                namespaceName,
+                apiVersion,
+                kind,
+                res.object,
+              );
+
+              break;
+            default:
+              console.log(res);
+          }
+
+          // do something if success
+          // and cancel the stream
+          // reader.cancel().catch(() => null);
+
+          return readStream();
+        });
+      return readStream();
+    } else {
+      return Promise.reject(res);
+    }
+  });
 }
 
 export async function createByAPIVersionKind(

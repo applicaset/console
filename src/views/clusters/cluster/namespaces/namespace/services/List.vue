@@ -19,6 +19,7 @@
               ) as Service[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.spec.ports="{ value }">
               {{
@@ -96,7 +97,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
 import { Service } from "@/types/v1";
 import { deleteService } from "@/api/v1";
@@ -112,7 +113,7 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Type", align: "start", key: "spec.type" },
   { title: "ClusterIP", align: "start", key: "spec.clusterIP" },
@@ -121,10 +122,14 @@ const headers = [
   { title: "Selector", align: "start", key: "spec.selector" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 
 const deleteDialog = ref<{ [name: string]: boolean }>({});

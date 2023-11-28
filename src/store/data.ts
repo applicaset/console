@@ -142,5 +142,75 @@ export const useDataStore = defineStore("data", {
         this.namespacedData[clusterName][namespaceName][apiVersion] = {};
       this.namespacedData[clusterName][namespaceName][apiVersion][kind] = value;
     },
+    addToNamespacedList(
+      clusterName: string,
+      namespaceName: string,
+      apiVersion: string,
+      kind: string,
+      value: any,
+    ) {
+      if (!this.namespacedData[clusterName])
+        this.namespacedData[clusterName] = {};
+      if (!this.namespacedData[clusterName][namespaceName])
+        this.namespacedData[clusterName][namespaceName] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
+        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
+        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
+      this.namespacedData[clusterName][namespaceName][apiVersion][kind].push(
+        value,
+      );
+    },
+    removeFromNamespacedList(
+      clusterName: string,
+      namespaceName: string,
+      apiVersion: string,
+      kind: string,
+      resource: { metadata: ObjectMeta },
+    ) {
+      if (!this.namespacedData[clusterName])
+        this.namespacedData[clusterName] = {};
+      if (!this.namespacedData[clusterName][namespaceName])
+        this.namespacedData[clusterName][namespaceName] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
+        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
+        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
+      this.namespacedData[clusterName][namespaceName][apiVersion][kind] =
+        this.namespacedData[clusterName][namespaceName][apiVersion][
+          kind
+        ].filter(
+          (val: { metadata: ObjectMeta }) =>
+            resource.metadata.name !== val.metadata.name,
+        );
+    },
+    replaceInNamespacedList(
+      clusterName: string,
+      namespaceName: string,
+      apiVersion: string,
+      kind: string,
+      resource: { metadata: ObjectMeta },
+    ) {
+      if (!this.namespacedData[clusterName])
+        this.namespacedData[clusterName] = {};
+      if (!this.namespacedData[clusterName][namespaceName])
+        this.namespacedData[clusterName][namespaceName] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
+        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
+      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
+        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
+      const index = this.namespacedData[clusterName][namespaceName][apiVersion][
+        kind
+      ].findIndex(
+        (val: { metadata: ObjectMeta }) =>
+          resource.metadata.name === val.metadata.name,
+      );
+
+      if (index !== -1) {
+        this.namespacedData[clusterName][namespaceName][apiVersion][kind][
+          index
+        ] = resource;
+      }
+    },
   },
 });

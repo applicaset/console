@@ -14,6 +14,7 @@
               getNamespacedList(clusterName, namespaceName, 'v1', 'Event')
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.type="{ value }">
               <v-chip :color="eventTypeColor(value)">
@@ -30,7 +31,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row> </v-row>
+    <v-row></v-row>
   </v-container>
 </template>
 
@@ -39,7 +40,7 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -49,16 +50,23 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Type", align: "center", key: "type" },
   { title: "Reason", align: "start", key: "reason" },
   { title: "Message", align: "start", key: "message", sortable: false },
   { title: "Involved Object", align: "start", key: "involvedObject" },
   { title: "Last Seen", align: "center", key: "lastTimestamp" },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "lastTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date), { addSuffix: true });
+  return formatDistanceToNow(new Date(date), {
+    addSuffix: true,
+    includeSeconds: true,
+  });
 }
 
 function eventTypeColor(type: string): string {

@@ -19,6 +19,7 @@
               ) as Pod[]
             "
             multi-sort
+            :sort-by="sortBy"
           >
             <template #item.status.containerStatuses="{ value }">
               <v-icon
@@ -71,8 +72,8 @@
                     <v-btn
                       color=""
                       @click="closeDeleteDialog(item.metadata.name)"
-                      >Cancel</v-btn
-                    >
+                      >Cancel
+                    </v-btn>
                     <v-btn
                       color="error"
                       :loading="deleting[item.metadata.name]"
@@ -87,7 +88,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row> </v-row>
+    <v-row></v-row>
   </v-container>
 </template>
 
@@ -96,9 +97,9 @@ import { storeToRefs } from "pinia";
 import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
-import { VDataTable } from "vuetify/components";
+import { VDataTableVirtual } from "vuetify/components";
 import { inject, ref } from "vue";
-import { Pod, PodStatus } from "@/types/v1";
+import { ContainerStatus, Pod, PodStatus } from "@/types/v1";
 import { deletePod } from "@/api/v1";
 
 const route = useRoute();
@@ -112,31 +113,29 @@ const dataStore = useDataStore();
 
 const { getNamespacedList } = storeToRefs(dataStore);
 
-const headers = [
+const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Name", align: "start", key: "metadata.name" },
   { title: "Containers", align: "start", key: "status.containerStatuses" },
   { title: "QoS", align: "start", key: "status.qosClass" },
   { title: "Age", align: "center", key: "metadata.creationTimestamp" },
   { title: "Status", align: "center", key: "status.phase" },
   { title: "", align: "center", key: "_actions", sortable: false },
-] as InstanceType<typeof VDataTable>["headers"];
+];
+
+const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
+  { key: "metadata.creationTimestamp", order: "desc" },
+];
 
 function formatDate(date: string): string {
-  return formatDistanceToNow(new Date(date));
+  return formatDistanceToNow(new Date(date), { includeSeconds: true });
 }
 
-function containerStatusColor(containerStatus: any): string {
-  if (containerStatus.state.running) {
-    return "success";
-  }
+function containerStatusColor(containerStatus: ContainerStatus): string {
+  if (containerStatus.state.running) return "success";
 
-  if (containerStatus.state.waiting) {
-    return "warning";
-  }
+  if (containerStatus.state.waiting) return "warning";
 
-  if (containerStatus.state.terminated) {
-    return "grey";
-  }
+  if (containerStatus.state.terminated) return "grey";
 
   return "";
 }

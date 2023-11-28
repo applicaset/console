@@ -69,7 +69,7 @@
                   namespaceName,
                   'v1',
                   'Event',
-                )"
+                ).sort(sortEvents) as Event[]"
                 :key="event.metadata.uid"
               >
                 <td>
@@ -106,6 +106,7 @@ import { useDataStore } from "@/store/data";
 import { useRoute } from "vue-router";
 import { formatDistanceToNow } from "date-fns";
 import ApplicationsList from "@/components/ApplicationsList.vue";
+import { Event } from "@/types/v1";
 
 const route = useRoute();
 const clusterName = route.params.clusterName as string;
@@ -116,7 +117,16 @@ const dataStore = useDataStore();
 const { getNamespacedList } = storeToRefs(dataStore);
 
 function formatDate(date: string) {
-  return formatDistanceToNow(new Date(date), { addSuffix: true });
+  return formatDistanceToNow(new Date(date), {
+    addSuffix: true,
+    includeSeconds: true,
+  });
+}
+
+function sortEvents(a: Event, b: Event) {
+  return (
+    new Date(b.lastTimestamp).getTime() - new Date(a.lastTimestamp).getTime()
+  );
 }
 
 function eventTypeColor(type: string): string {
