@@ -1,4 +1,10 @@
 import { pageTitle } from "vue-page-title";
 import router from "@/router";
+import i18n from "@/plugins/i18n";
 
-export default pageTitle({ router, suffix: " | ApplicaSet Console" });
+const vuePageTitle = pageTitle({
+  router,
+  suffix: ` | ${i18n.global.t("app.title")}`,
+});
+
+export default vuePageTitle;

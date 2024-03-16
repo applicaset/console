@@ -3,6 +3,7 @@ import keycloak from "@/auth/keycloak";
 import gravatar from "gravatar";
 import { ref } from "vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import logo from "@/assets/images/logo.svg?url";
 
 const avatar = ref("");
 const userTitle = ref("");
@@ -21,14 +22,9 @@ function signOut() {
 <template>
   <v-app-bar scroll-behavior="hide">
     <template v-slot:prepend>
-      <v-img
-        src="@/assets/images/logo.svg"
-        :width="48"
-        :height="48"
-        alt="Logo"
-      />
+      <v-img :src="logo" :width="48" :height="48" alt="Logo" />
     </template>
-    <v-app-bar-title>ApplicaSet Console</v-app-bar-title>
+    <v-app-bar-title>{{ $t("app.title") }}</v-app-bar-title>
     <template v-slot:append>
       <v-menu>
         <template v-slot:activator="{ props }">

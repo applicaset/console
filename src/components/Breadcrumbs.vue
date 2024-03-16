@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLinkProps, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { computed } from "vue";
 
 const route = useRoute();

@@ -72,7 +72,7 @@ function showAddNamespaceDialog() {
         >Back to Cluster Dashboard</v-btn
       >
     </v-row>
-    <v-row class="justify-space-between">
+    <v-row class="justify-space-between align-center">
       <v-col cols="auto">
         <h1 class="text-h1">Namespaces</h1>
       </v-col>
