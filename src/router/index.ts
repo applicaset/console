@@ -85,52 +85,62 @@ import CronJobEdit from "@/views/clusters/cluster/namespaces/namespace/cronjobs/
 const routes = [
   {
     path: "/",
+    name: "Index",
     component: Index,
+    meta: { title: "Home" },
     redirect: { name: "Clusters" },
     children: [
       {
         path: "clusters",
         name: "Clusters",
         component: Clusters,
+        meta: { title: "Clusters" },
         redirect: { name: "ClustersList" },
         children: [
           {
             path: "",
             name: "ClustersList",
             component: ClustersList,
+            meta: { title: "Clusters List" },
           },
           {
             path: ":clusterName",
             name: "Cluster",
             component: Cluster,
+            meta: { title: "Cluster A" },
             redirect: { name: "ClusterDashboard" },
             children: [
               {
                 path: "dashboard",
                 name: "ClusterDashboard",
                 component: ClusterDashboard,
+                meta: { title: "Cluster Dashboard" },
               },
               {
                 path: "namespaces",
                 name: "Namespaces",
                 component: Namespaces,
+                meta: { title: "Namespaces" },
                 redirect: { name: "NamespacesList" },
                 children: [
                   {
                     path: "",
                     name: "NamespacesList",
                     component: NamespacesList,
+                    meta: { title: "Namespaces List" },
                   },
                   {
                     path: ":namespaceName",
                     name: "Namespace",
                     component: Namespace,
+                    meta: { title: "Namespace A" },
                     redirect: { name: "NamespaceDashboard" },
                     children: [
                       {
                         path: "dashboard",
                         name: "NamespaceDashboard",
                         component: NamespaceDashboard,
+                        meta: { title: "Namespace Dashboard" },
                       },
                       {
                         path: "applications",

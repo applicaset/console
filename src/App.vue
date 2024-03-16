@@ -1,15 +1,3 @@
-<template>
-  <v-app>
-    <v-overlay
-      :model-value="initializing"
-      class="align-center justify-center"
-      :persistent="true"
-    >
-      <v-progress-circular color="primary" indeterminate></v-progress-circular>
-    </v-overlay>
-    <router-view v-if="!initializing" />
-  </v-app>
-</template>
 <script setup lang="ts">
 import keycloak from "@/auth/keycloak";
 import { inject, ref } from "vue";
@@ -22,3 +10,12 @@ keycloak.init({ onLoad: "login-required" }).then(() => {
   initializing.value = false;
 });
 </script>
+
+<template>
+  <v-app>
+    <v-overlay v-model="initializing" class="align-center justify-center">
+      <v-progress-circular color="primary" indeterminate size="large" />
+    </v-overlay>
+    <router-view v-if="!initializing" />
+  </v-app>
+</template>

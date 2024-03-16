@@ -1,36 +1,8 @@
-<template>
-  <div>
-    <v-app-bar color="primary">
-      <v-app-bar-title>ApplicaSet Console</v-app-bar-title>
-      <v-toolbar-items>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn :rounded="false" v-bind="props">
-              <v-avatar :image="avatar" class="me-2" />
-              <template v-if="$vuetify.display.smAndUp">
-                {{ userTitle }}
-              </template>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              prepend-icon="mdi-logout"
-              title="Sign Out"
-              @click="signOut"
-            />
-          </v-list>
-        </v-menu>
-      </v-toolbar-items>
-    </v-app-bar>
-    <v-main>
-      <router-view />
-    </v-main>
-  </div>
-</template>
 <script setup lang="ts">
 import keycloak from "@/auth/keycloak";
 import gravatar from "gravatar";
 import { ref } from "vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const avatar = ref("");
 const userTitle = ref("");
@@ -38,10 +10,47 @@ const userTitle = ref("");
 keycloak.loadUserProfile().then(() => {
   userTitle.value = `${keycloak.profile?.firstName} ${keycloak.profile?.lastName}`;
   if (keycloak.profile?.email)
-    avatar.value = gravatar.url(keycloak.profile?.email, { s: "40" }, true);
+    avatar.value = gravatar.url(keycloak.profile?.email, { s: "96" }, true);
 });
 
 function signOut() {
   keycloak.logout();
 }
 </script>
+
+<template>
+  <v-app-bar>
+    <template v-slot:prepend>
+      <v-img
+        src="@/assets/images/logo.svg"
+        :width="48"
+        :height="48"
+        alt="Logo"
+      />
+    </template>
+    <v-app-bar-title>ApplicaSet Console</v-app-bar-title>
+    <template v-slot:append>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn :icon="true" v-bind="props">
+            <v-avatar size="large" :image="avatar" />
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            {{ userTitle }}
+          </v-card-title>
+          <v-list>
+            <v-list-item @click="signOut">
+              <v-list-item-title> Sign Out </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
+    </template>
+  </v-app-bar>
+  <v-main>
+    <breadcrumbs />
+    <router-view />
+  </v-main>
+</template>

@@ -16,23 +16,64 @@ const getNamespacedList =
       state.namespacedData[clusterName][namespaceName][apiVersion][kind]) ||
     [];
 
+const checkOrSetApiVersion =
+  (state: any) =>
+  (clusterName: string, namespaceName: string, apiVersion: string) => {
+    state.namespacedData[clusterName] = state.namespacedData[clusterName] || {};
+    state.namespacedData[clusterName][namespaceName] =
+      state.namespacedData[clusterName][namespaceName] || {};
+    state.namespacedData[clusterName][namespaceName][apiVersion] =
+      state.namespacedData[clusterName][namespaceName][apiVersion] || {};
+  };
+
+const checkOrSetKind =
+  (state: any) =>
+  (
+    clusterName: string,
+    namespaceName: string,
+    apiVersion: string,
+    kind: string,
+  ) => {
+    checkOrSetApiVersion(state)(clusterName, namespaceName, apiVersion);
+    state.namespacedData[clusterName][namespaceName][apiVersion][kind] =
+      state.namespacedData[clusterName][namespaceName][apiVersion][kind] || [];
+  };
+
 export const useDataStore = defineStore("data", {
   state: () => ({
-    clusters: {} as { [key: string]: string },
-    data: {} as { [key: string]: any },
-    namespacedData: {} as { [key: string]: any },
+    // clusters is a map of cluster name and cluster url
+    clusters: {} as { [clusterName: string]: string },
+    // data contains the list of resources by cluster name, api version and kind
+    data: {} as {
+      [clusterName: string]: {
+        [apiVersion: string]: { [kind: string]: any };
+      };
+    },
+    // namespacedData contains the list of namespaced resources by cluster name, namespace name, api version and kind
+    namespacedData: {} as {
+      [clusterName: string]: {
+        [namespaceName: string]: {
+          [apiVersion: string]: { [kind: string]: any };
+        };
+      };
+    },
+    //
     applications: {} as { [key: string]: any },
   }),
   getters: {
+    // getClusters returns list of clusters as an object with cluster name as key and cluster url as value
     getClusters: (state) => state.clusters,
+    // getClusterUrl returns the url of the cluster by cluster name
     getClusterUrl: (state) => (clusterName: string) =>
       state.clusters[clusterName],
+    // getList returns the list of resources by cluster name, api version and kind
     getList:
       (state) => (clusterName: string, apiVersion: string, kind: string) =>
         (state.data[clusterName] &&
           state.data[clusterName][apiVersion] &&
           state.data[clusterName][apiVersion][kind]) ||
         [],
+    // getNamespacedList returns the list of namespaced resources by cluster name, namespace name, api version and kind
     getNamespacedList: getNamespacedList,
     getResource:
       (state) =>
@@ -79,9 +120,7 @@ export const useDataStore = defineStore("data", {
         return [...deployments, ...statefulSets]
           .map(
             (workload: { metadata: ObjectMeta }) =>
-              (workload.metadata.labels &&
-                workload.metadata.labels["app.kubernetes.io/instance"]) ||
-              "",
+              workload.metadata.labels?.["app.kubernetes.io/instance"] || "",
           )
           .filter((value, index, self) => self.indexOf(value) === index);
       };
@@ -96,8 +135,7 @@ export const useDataStore = defineStore("data", {
           "Deployment",
         ).filter(
           (deployment: Deployment) =>
-            deployment.metadata.labels &&
-            deployment.metadata.labels["app.kubernetes.io/instance"],
+            deployment.metadata.labels?.["app.kubernetes.io/instance"],
         );
         const statefulSets = getNamespacedList(state)(
           clusterName,
@@ -106,14 +144,13 @@ export const useDataStore = defineStore("data", {
           "StatefulSet",
         ).filter(
           (deployment: Deployment) =>
-            deployment.metadata.labels &&
-            deployment.metadata.labels["app.kubernetes.io/instance"],
+            deployment.metadata.labels?.["app.kubernetes.io/instance"],
         );
 
         return [...deployments, ...statefulSets].filter(
           (workload: { metadata: ObjectMeta }) =>
-            workload.metadata.labels &&
-            workload.metadata.labels["app.kubernetes.io/instance"] === instance,
+            workload.metadata.labels?.["app.kubernetes.io/instance"] ===
+            instance,
         );
       },
   },
@@ -122,9 +159,9 @@ export const useDataStore = defineStore("data", {
       this.clusters = clusters;
     },
     setList(clusterName: string, apiVersion: string, kind: string, value: any) {
-      if (!this.data[clusterName]) this.data[clusterName] = {};
-      if (!this.data[clusterName][apiVersion])
-        this.data[clusterName][apiVersion] = {};
+      this.data[clusterName] = this.data[clusterName] || {};
+      this.data[clusterName][apiVersion] =
+        this.data[clusterName][apiVersion] || {};
       this.data[clusterName][apiVersion][kind] = value;
     },
     setNamespacedList(
@@ -134,12 +171,8 @@ export const useDataStore = defineStore("data", {
       kind: string,
       value: any,
     ) {
-      if (!this.namespacedData[clusterName])
-        this.namespacedData[clusterName] = {};
-      if (!this.namespacedData[clusterName][namespaceName])
-        this.namespacedData[clusterName][namespaceName] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
-        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
+      checkOrSetApiVersion(this)(clusterName, namespaceName, apiVersion);
+
       this.namespacedData[clusterName][namespaceName][apiVersion][kind] = value;
     },
     addToNamespacedList(
@@ -149,14 +182,8 @@ export const useDataStore = defineStore("data", {
       kind: string,
       value: any,
     ) {
-      if (!this.namespacedData[clusterName])
-        this.namespacedData[clusterName] = {};
-      if (!this.namespacedData[clusterName][namespaceName])
-        this.namespacedData[clusterName][namespaceName] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
-        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
-        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
+      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
+
       this.namespacedData[clusterName][namespaceName][apiVersion][kind].push(
         value,
       );
@@ -168,14 +195,8 @@ export const useDataStore = defineStore("data", {
       kind: string,
       resource: { metadata: ObjectMeta },
     ) {
-      if (!this.namespacedData[clusterName])
-        this.namespacedData[clusterName] = {};
-      if (!this.namespacedData[clusterName][namespaceName])
-        this.namespacedData[clusterName][namespaceName] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
-        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
-        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
+      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
+      // TODO: remove in place
       this.namespacedData[clusterName][namespaceName][apiVersion][kind] =
         this.namespacedData[clusterName][namespaceName][apiVersion][
           kind
@@ -191,26 +212,17 @@ export const useDataStore = defineStore("data", {
       kind: string,
       resource: { metadata: ObjectMeta },
     ) {
-      if (!this.namespacedData[clusterName])
-        this.namespacedData[clusterName] = {};
-      if (!this.namespacedData[clusterName][namespaceName])
-        this.namespacedData[clusterName][namespaceName] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion])
-        this.namespacedData[clusterName][namespaceName][apiVersion] = {};
-      if (!this.namespacedData[clusterName][namespaceName][apiVersion][kind])
-        this.namespacedData[clusterName][namespaceName][apiVersion][kind] = [];
-      const index = this.namespacedData[clusterName][namespaceName][apiVersion][
-        kind
-      ].findIndex(
-        (val: { metadata: ObjectMeta }) =>
-          resource.metadata.name === val.metadata.name,
-      );
+      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
 
-      if (index !== -1) {
-        this.namespacedData[clusterName][namespaceName][apiVersion][kind][
-          index
-        ] = resource;
-      }
+      this.namespacedData[clusterName][namespaceName][apiVersion][kind].forEach(
+        (val: { metadata: ObjectMeta }, index: string) => {
+          if (resource.metadata.name === val.metadata.name) {
+            this.namespacedData[clusterName][namespaceName][apiVersion][kind][
+              index
+            ] = resource;
+          }
+        },
+      );
     },
   },
 });

@@ -1,5 +1,16 @@
 <template>
-  <v-data-iterator :items="getApplicationNames(clusterName, namespaceName)">
+  <v-data-iterator
+    :items="getApplicationNames(clusterName, namespaceName)"
+    class="flex-grow-1"
+  >
+    <template #no-data>
+      <v-row>
+        <v-col cols="12" class="text-center">
+          <div>No Applications Deployed</div>
+          <v-btn variant="text"> Deploy Application </v-btn>
+        </v-col>
+      </v-row>
+    </template>
     <template #default="{ items }">
       <v-row>
         <v-col cols="12" v-for="item in items" :key="item.raw">

@@ -2,6 +2,8 @@ import { registerPlugins } from "@/plugins";
 import App from "./App.vue";
 import { createApp } from "vue";
 import { useDataStore } from "@/store/data";
+import "@fontsource/open-sans";
+import "@/style.css";
 
 const app = createApp(App);
 

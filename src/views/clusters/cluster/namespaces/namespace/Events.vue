@@ -1,13 +1,21 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-btn
+        variant="plain"
+        prepend-icon="mdi-chevron-left"
+        :to="{ name: 'NamespaceDashboard' }"
+        >Back to Dashboard</v-btn
+      >
+    </v-row>
+    <v-row>
       <v-col>
         <h2 class="text-h2">Events</h2>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-card>
+        <v-card variant="outlined">
           <v-data-table-virtual
             :headers="headers"
             :items="
@@ -55,7 +63,12 @@ const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Reason", align: "start", key: "reason" },
   { title: "Message", align: "start", key: "message", sortable: false },
   { title: "Involved Object", align: "start", key: "involvedObject" },
-  { title: "Last Seen", align: "center", key: "lastTimestamp" },
+  {
+    title: "Last Seen",
+    align: "center",
+    key: "lastTimestamp",
+    cellProps: { class: "text-no-wrap" },
+  },
 ];
 
 const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [

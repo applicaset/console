@@ -16,7 +16,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node", "vuetify", "gravatar", "js-yaml"]
+    "types": ["node", "vuetify", "gravatar", "js-yaml", "vite-svg-loader"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [

@@ -1,27 +1,3 @@
-<template>
-  <v-container>
-    <v-toolbar :flat="true" color="transparent">
-      <v-toolbar-title> Clusters </v-toolbar-title>
-    </v-toolbar>
-    <v-row>
-      <v-col
-        v-for="(val, key) in getClusters"
-        :key="key"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
-        xl="2"
-      >
-        <v-card
-          :title="`${key}`"
-          :subtitle="val"
-          :to="{ name: 'Cluster', params: { clusterName: key } }"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
 <script setup lang="ts">
 import { useDataStore } from "@/store/data";
 import { storeToRefs } from "pinia";
@@ -37,3 +13,22 @@ if (clusterNames.length === 1) {
   router.push({ name: "Cluster", params: { clusterName: clusterNames[0] } });
 }
 </script>
+
+<template>
+  <v-container>
+    <v-row class="justify-center">
+      <div class="text-h2">Clusters</div>
+    </v-row>
+    <v-row>
+      <v-col cols="12" v-for="(val, key) in getClusters" :key="key">
+        <v-card
+          variant="outlined"
+          :to="{ name: 'Cluster', params: { clusterName: key } }"
+        >
+          <v-card-title class="text-center">{{ key }}</v-card-title>
+          <v-card-subtitle class="text-center pb-2">{{ val }}</v-card-subtitle>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>

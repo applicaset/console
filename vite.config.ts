@@ -1,7 +1,8 @@
 // Plugins
 import vue from "@vitejs/plugin-vue";
-import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+import { transformAssetUrls } from "vite-plugin-vuetify";
 import ViteFonts from "unplugin-fonts/vite";
+import svgLoader from "vite-svg-loader";
 
 // Utilities
 import { defineConfig } from "vite";
@@ -13,20 +14,21 @@ export default defineConfig({
     vue({
       template: { transformAssetUrls },
     }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
-    vuetify({
-      autoImport: true,
-    }),
     ViteFonts({
       google: {
         families: [
           {
-            name: "Roboto",
+            name: "Open Sans",
+            styles: "wght@100;300;400;500;700;900",
+          },
+          {
+            name: "JetBrains Mono",
             styles: "wght@100;300;400;500;700;900",
           },
         ],
       },
     }),
+    svgLoader(),
   ],
   define: { "process.env": {} },
   resolve: {
