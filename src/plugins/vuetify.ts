@@ -48,11 +48,17 @@ const vuetify = createVuetify({
     global: {
       ripple: false,
     },
-    VCard: {},
+    VCard: {
+      rounded: "md",
+    },
     VBtn: {
       rounded: "md",
       flat: true,
-      style: "text-transform: none;",
+      style: [{ textTransform: "none" }],
+    },
+    VTextField: {
+      variant: "outlined",
+      persistentPlaceholder: true,
     },
   },
 });
