@@ -40,7 +40,7 @@ function signOut() {
           <v-card-title>
             {{ userTitle }}
           </v-card-title>
-          <v-list>
+          <v-list nav>
             <v-list-item @click="signOut">
               <v-list-item-title> Sign Out </v-list-item-title>
             </v-list-item>
@@ -54,10 +54,8 @@ function signOut() {
     <router-view />
   </v-main>
   <v-footer>
-    <v-row class="text-center">
-      <v-col>
-        Copyright &copy; {{ new Date().getFullYear() }} ApplicaSet
-      </v-col>
+    <v-row justify="center" no-gutters>
+      Copyright &copy; {{ new Date().getFullYear() }} ApplicaSet
     </v-row>
   </v-footer>
 </template>

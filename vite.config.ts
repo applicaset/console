@@ -1,14 +1,11 @@
-// Plugins
 import vue from "@vitejs/plugin-vue";
+//@ts-ignore
 import { transformAssetUrls } from "vite-plugin-vuetify";
 import ViteFonts from "unplugin-fonts/vite";
 import svgLoader from "vite-svg-loader";
-
-// Utilities
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue({

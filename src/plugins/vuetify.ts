@@ -45,10 +45,14 @@ export default createVuetify({
     defaultSet: "mdi",
   },
   defaults: {
+    global: {
+      ripple: false,
+    },
     VCard: {},
     VBtn: {
       rounded: "md",
       flat: true,
+      style: "text-transform: none;",
     },
   },
 });
