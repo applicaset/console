@@ -1,10 +1,10 @@
-<script setup>
-import { useRoute } from "vue-router";
+<script setup lang="ts">
+import { RouterLinkProps, useRoute } from "vue-router";
 import { computed } from "vue";
 
 const route = useRoute();
 
-const items = computed(() => {
+const items = computed((): any[] => {
   return route.matched.map((item) => {
     return {
       title: item.meta?.title || item.name,

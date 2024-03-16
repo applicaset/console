@@ -19,7 +19,7 @@ function signOut() {
 </script>
 
 <template>
-  <v-app-bar>
+  <v-app-bar scroll-behavior="hide">
     <template v-slot:prepend>
       <v-img
         src="@/assets/images/logo.svg"
@@ -53,4 +53,11 @@ function signOut() {
     <breadcrumbs />
     <router-view />
   </v-main>
+  <v-footer>
+    <v-row class="text-center">
+      <v-col>
+        Copyright &copy; {{ new Date().getFullYear() }} ApplicaSet
+      </v-col>
+    </v-row>
+  </v-footer>
 </template>
