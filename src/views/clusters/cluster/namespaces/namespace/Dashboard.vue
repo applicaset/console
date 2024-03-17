@@ -9,7 +9,9 @@
       >
     </v-row>
     <v-row>
-      <h2 class="text-h1">Namespace "{{ namespaceName }}"</h2>
+      <v-col cols="12">
+        <h2 class="text-h1">Namespace "{{ namespaceName }}"</h2>
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
