@@ -7,7 +7,9 @@
       <v-row>
         <v-col cols="12" class="text-center">
           <div>No Applications Deployed</div>
-          <v-btn variant="text"> Deploy Application </v-btn>
+          <v-btn variant="text" :to="{ name: 'ApplicationsNew' }">
+            Deploy Application
+          </v-btn>
         </v-col>
       </v-row>
     </template>

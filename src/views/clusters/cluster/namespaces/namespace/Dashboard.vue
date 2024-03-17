@@ -47,7 +47,7 @@
         <v-row>
           <v-col cols="12" class="d-flex align-center">
             <h2 class="text-h2 flex-grow-1">Applications</h2>
-            <v-btn>New Application</v-btn>
+            <v-btn :to="{ name: 'ApplicationsNew' }">New Application</v-btn>
           </v-col>
           <ApplicationsList
             :cluster-name="clusterName"

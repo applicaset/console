@@ -6,7 +6,7 @@
         variant="plain"
         prepend-icon="mdi-chevron-left"
       >
-        Back to Select Cluster
+        Back to Clusters
       </v-btn>
     </v-row>
     <v-row>

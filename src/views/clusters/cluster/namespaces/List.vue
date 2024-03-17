@@ -5,6 +5,7 @@ import { Namespace } from "@/types/v1";
 import { useDataStore } from "@/store/data";
 import { storeToRefs } from "pinia";
 import { canI } from "@/api/authorization-k8s-io-v1";
+import router from "@/router";
 
 const route = useRoute();
 
@@ -45,8 +46,12 @@ async function createNamespace() {
     } as Namespace;
 
     await axios.post(`${clusterUrl}/api/v1/namespaces`, newNamespace);
-    newNamespaceName.value = "";
     console.log(`Namespace '${newNamespaceName.value}' created successfully.`);
+    await router.push({
+      name: "Namespace",
+      params: { namespaceName: newNamespaceName.value },
+    });
+    newNamespaceName.value = "";
     addNamespaceDialog.value = false;
   } finally {
     creatingNamespace.value = false;

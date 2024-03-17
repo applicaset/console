@@ -5,12 +5,21 @@ import { computed } from "vue";
 const route = useRoute();
 
 const items = computed((): any[] => {
-  return route.matched.map((item) => {
-    return {
-      title: item.meta?.title || item.name,
-      to: item.path,
-    };
-  });
+  return route.matched
+    .filter((item) => !item.meta?.hideCrumb)
+    .map((item) => {
+      return {
+        title: item.meta?.title || item.name,
+        to: {
+          name: item.name,
+          params: Object.keys(route.params)
+            .filter((key) => item.path.includes(`:${key}`))
+            .reduce((cur, key) => {
+              return Object.assign(cur, { [key]: route.params[key] });
+            }, {}),
+        },
+      };
+    });
 });
 </script>
 <template>

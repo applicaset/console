@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-card>
+        <v-card variant="outlined">
           <v-data-table-virtual
             :headers="headers"
             :items="
@@ -112,12 +112,20 @@ const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
   { title: "Suspend", align: "start", key: "spec.suspend" },
   { title: "Active", align: "start", key: "status.active" },
   { title: "Last Schedule", align: "start", key: "status.lastScheduleTime" },
-  { title: "Age", align: "start", key: "metadata.creationTimestamp" },
+  {
+    title: "Age",
+    align: "start",
+    key: "metadata.creationTimestamp",
+    cellProps: { class: "text-no-wrap" },
+  },
   { title: "", align: "center", key: "_actions", sortable: false },
 ];
 
 const sortBy: InstanceType<typeof VDataTableVirtual>["sortBy"] = [
-  { key: "metadata.creationTimestamp", order: "desc" },
+  {
+    key: "metadata.creationTimestamp",
+    order: "desc",
+  },
 ];
 
 function formatDate(date: string): string {

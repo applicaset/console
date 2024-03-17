@@ -14,6 +14,9 @@ import NamespaceDashboard from "@/views/clusters/cluster/namespaces/namespace/Da
 
 import Applications from "@/views/clusters/cluster/namespaces/namespace/applications/Index.vue";
 import ApplicationsList from "@/views/clusters/cluster/namespaces/namespace/applications/List.vue";
+import ApplicationsNew from "@/views/clusters/cluster/namespaces/namespace/applications/new/Index.vue";
+import ApplicationsNewGit from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/Index.vue";
+import ApplicationsNewGitGithub from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/github/Index.vue";
 
 import Pods from "@/views/clusters/cluster/namespaces/namespace/pods/Index.vue";
 import PodsList from "@/views/clusters/cluster/namespaces/namespace/pods/List.vue";
@@ -101,7 +104,7 @@ const routes = [
             path: "",
             name: "ClustersList",
             component: ClustersList,
-            meta: { title: "Clusters List" },
+            meta: { hideCrumb: true },
           },
           {
             path: ":clusterName",
@@ -127,7 +130,7 @@ const routes = [
                     path: "",
                     name: "NamespacesList",
                     component: NamespacesList,
-                    meta: { title: "Namespaces List" },
+                    meta: { hideCrumb: true },
                   },
                   {
                     path: ":namespaceName",
@@ -151,7 +154,26 @@ const routes = [
                           {
                             path: "",
                             name: "ApplicationsList",
+                            meta: { hideCrumb: true },
                             component: ApplicationsList,
+                          },
+                          {
+                            path: "new",
+                            name: "ApplicationsNew",
+                            meta: { title: "New Application" },
+                            component: ApplicationsNew,
+                          },
+                          {
+                            path: "new/git",
+                            name: "ApplicationsNewGit",
+                            meta: { title: "New Git Application" },
+                            component: ApplicationsNewGit,
+                          },
+                          {
+                            path: "new/git/github",
+                            name: "ApplicationsNewGitGithub",
+                            meta: { title: "New GitHub Application" },
+                            component: ApplicationsNewGitGithub,
                           },
                         ],
                       },
@@ -164,6 +186,7 @@ const routes = [
                           {
                             path: "",
                             name: "PodsList",
+                            meta: { hideCrumb: true },
                             component: PodsList,
                           },
                           {
@@ -189,6 +212,7 @@ const routes = [
                           {
                             path: "",
                             name: "DeploymentsList",
+                            meta: { hideCrumb: true },
                             component: DeploymentsList,
                           },
                           {
@@ -214,6 +238,7 @@ const routes = [
                           {
                             path: "",
                             name: "StatefulSetsList",
+                            meta: { hideCrumb: true },
                             component: StatefulSetsList,
                           },
                           {
@@ -239,6 +264,7 @@ const routes = [
                           {
                             path: "",
                             name: "JobsList",
+                            meta: { hideCrumb: true },
                             component: JobsList,
                           },
                           {
@@ -264,6 +290,7 @@ const routes = [
                           {
                             path: "",
                             name: "CronJobsList",
+                            meta: { hideCrumb: true },
                             component: CronJobsList,
                           },
                           {
@@ -289,6 +316,7 @@ const routes = [
                           {
                             path: "",
                             name: "ConfigMapsList",
+                            meta: { hideCrumb: true },
                             component: ConfigMapsList,
                           },
                           {
@@ -314,6 +342,7 @@ const routes = [
                           {
                             path: "",
                             name: "SecretsList",
+                            meta: { hideCrumb: true },
                             component: SecretsList,
                           },
                           {
@@ -339,6 +368,7 @@ const routes = [
                           {
                             path: "",
                             name: "ServicesList",
+                            meta: { hideCrumb: true },
                             component: ServicesList,
                           },
                           {
@@ -364,6 +394,7 @@ const routes = [
                           {
                             path: "",
                             name: "IngressesList",
+                            meta: { hideCrumb: true },
                             component: IngressesList,
                           },
                           {
@@ -389,6 +420,7 @@ const routes = [
                           {
                             path: "",
                             name: "PersistentVolumeClaimsList",
+                            meta: { hideCrumb: true },
                             component: PersistentVolumeClaimsList,
                           },
                           {
@@ -419,6 +451,7 @@ const routes = [
                           {
                             path: "",
                             name: "ServiceAccountsList",
+                            meta: { hideCrumb: true },
                             component: ServiceAccountsList,
                           },
                           {
@@ -444,6 +477,7 @@ const routes = [
                           {
                             path: "",
                             name: "RolesList",
+                            meta: { hideCrumb: true },
                             component: RolesList,
                           },
                           {
@@ -469,6 +503,7 @@ const routes = [
                           {
                             path: "",
                             name: "RoleBindingsList",
+                            meta: { hideCrumb: true },
                             component: RoleBindingsList,
                           },
                           {

@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-card>
+        <v-card variant="outlined">
           <v-data-table-virtual
             :headers="headers"
             :items="
@@ -116,7 +116,12 @@ const headers: InstanceType<typeof VDataTableVirtual>["headers"] = [
     sortable: false,
   },
   { title: "Replicas", align: "center", key: "spec.replicas" },
-  { title: "Age", align: "center", key: "metadata.creationTimestamp" },
+  {
+    title: "Age",
+    align: "center",
+    key: "metadata.creationTimestamp",
+    cellProps: { class: "text-no-wrap" },
+  },
   { title: "", align: "center", key: "_actions", sortable: false },
 ];
 
