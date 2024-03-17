@@ -49,7 +49,7 @@ function signOut() {
     <breadcrumbs />
     <router-view />
   </v-main>
-  <v-footer>
+  <v-footer app height="76">
     <v-row justify="center" no-gutters>
       Copyright &copy; {{ new Date().getFullYear() }} ApplicaSet
     </v-row>
