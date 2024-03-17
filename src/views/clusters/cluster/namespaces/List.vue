@@ -17,8 +17,6 @@ const dataStore = useDataStore();
 
 const { getList } = storeToRefs(dataStore);
 
-const namespaces = getList.value(clusterName, "v1", "Namespace");
-
 const clusterUrl = dataStore.getClusterUrl(clusterName);
 
 const addNamespaceDialog = ref(false);
@@ -125,7 +123,7 @@ function showAddNamespaceDialog() {
         md="4"
         lg="3"
         xl="2"
-        v-for="namespace in namespaces"
+        v-for="namespace in getList(clusterName, 'v1', 'Namespace')"
         :key="namespace.metadata.uid"
       >
         <v-card

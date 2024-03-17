@@ -17,6 +17,20 @@ const getNamespacedList =
     [];
 
 const checkOrSetApiVersion =
+  (state: any) => (clusterName: string, apiVersion: string) => {
+    state.data[clusterName] = state.data[clusterName] || {};
+    state.data[clusterName][apiVersion] =
+      state.data[clusterName][apiVersion] || {};
+  };
+
+const checkOrSetKind =
+  (state: any) => (clusterName: string, apiVersion: string, kind: string) => {
+    checkOrSetApiVersion(state)(clusterName, apiVersion);
+    state.data[clusterName][apiVersion][kind] =
+      state.data[clusterName][apiVersion][kind] || [];
+  };
+
+const checkOrSetNamespacedApiVersion =
   (state: any) =>
   (clusterName: string, namespaceName: string, apiVersion: string) => {
     state.namespacedData[clusterName] = state.namespacedData[clusterName] || {};
@@ -26,7 +40,7 @@ const checkOrSetApiVersion =
       state.namespacedData[clusterName][namespaceName][apiVersion] || {};
   };
 
-const checkOrSetKind =
+const checkOrSetNamespacedKind =
   (state: any) =>
   (
     clusterName: string,
@@ -34,7 +48,11 @@ const checkOrSetKind =
     apiVersion: string,
     kind: string,
   ) => {
-    checkOrSetApiVersion(state)(clusterName, namespaceName, apiVersion);
+    checkOrSetNamespacedApiVersion(state)(
+      clusterName,
+      namespaceName,
+      apiVersion,
+    );
     state.namespacedData[clusterName][namespaceName][apiVersion][kind] =
       state.namespacedData[clusterName][namespaceName][apiVersion][kind] || [];
   };
@@ -159,10 +177,50 @@ export const useDataStore = defineStore("data", {
       this.clusters = clusters;
     },
     setList(clusterName: string, apiVersion: string, kind: string, value: any) {
-      this.data[clusterName] = this.data[clusterName] || {};
-      this.data[clusterName][apiVersion] =
-        this.data[clusterName][apiVersion] || {};
+      checkOrSetApiVersion(this)(clusterName, apiVersion);
+
       this.data[clusterName][apiVersion][kind] = value;
+    },
+    addToList(
+      clusterName: string,
+      apiVersion: string,
+      kind: string,
+      value: any,
+    ) {
+      checkOrSetKind(this)(clusterName, apiVersion, kind);
+
+      this.data[clusterName][apiVersion][kind].push(value);
+    },
+    removeFromList(
+      clusterName: string,
+      apiVersion: string,
+      kind: string,
+      object: { metadata: ObjectMeta },
+    ) {
+      checkOrSetKind(this)(clusterName, apiVersion, kind);
+      // TODO: remove in place
+      this.data[clusterName][apiVersion][kind] = this.data[clusterName][
+        apiVersion
+      ][kind].filter(
+        (val: { metadata: ObjectMeta }) =>
+          object.metadata.name !== val.metadata.name,
+      );
+    },
+    replaceInList(
+      clusterName: string,
+      apiVersion: string,
+      kind: string,
+      object: { metadata: ObjectMeta },
+    ) {
+      checkOrSetKind(this)(clusterName, apiVersion, kind);
+
+      this.data[clusterName][apiVersion][kind].forEach(
+        (val: { metadata: ObjectMeta }, index: string) => {
+          if (object.metadata.name === val.metadata.name) {
+            this.data[clusterName][apiVersion][kind][index] = object;
+          }
+        },
+      );
     },
     setNamespacedList(
       clusterName: string,
@@ -171,7 +229,11 @@ export const useDataStore = defineStore("data", {
       kind: string,
       value: any,
     ) {
-      checkOrSetApiVersion(this)(clusterName, namespaceName, apiVersion);
+      checkOrSetNamespacedApiVersion(this)(
+        clusterName,
+        namespaceName,
+        apiVersion,
+      );
 
       this.namespacedData[clusterName][namespaceName][apiVersion][kind] = value;
     },
@@ -182,7 +244,12 @@ export const useDataStore = defineStore("data", {
       kind: string,
       value: any,
     ) {
-      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
+      checkOrSetNamespacedKind(this)(
+        clusterName,
+        namespaceName,
+        apiVersion,
+        kind,
+      );
 
       this.namespacedData[clusterName][namespaceName][apiVersion][kind].push(
         value,
@@ -193,16 +260,21 @@ export const useDataStore = defineStore("data", {
       namespaceName: string,
       apiVersion: string,
       kind: string,
-      resource: { metadata: ObjectMeta },
+      object: { metadata: ObjectMeta },
     ) {
-      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
+      checkOrSetNamespacedKind(this)(
+        clusterName,
+        namespaceName,
+        apiVersion,
+        kind,
+      );
       // TODO: remove in place
       this.namespacedData[clusterName][namespaceName][apiVersion][kind] =
         this.namespacedData[clusterName][namespaceName][apiVersion][
           kind
         ].filter(
           (val: { metadata: ObjectMeta }) =>
-            resource.metadata.name !== val.metadata.name,
+            object.metadata.name !== val.metadata.name,
         );
     },
     replaceInNamespacedList(
@@ -210,16 +282,21 @@ export const useDataStore = defineStore("data", {
       namespaceName: string,
       apiVersion: string,
       kind: string,
-      resource: { metadata: ObjectMeta },
+      object: { metadata: ObjectMeta },
     ) {
-      checkOrSetKind(this)(clusterName, namespaceName, apiVersion, kind);
+      checkOrSetNamespacedKind(this)(
+        clusterName,
+        namespaceName,
+        apiVersion,
+        kind,
+      );
 
       this.namespacedData[clusterName][namespaceName][apiVersion][kind].forEach(
         (val: { metadata: ObjectMeta }, index: string) => {
-          if (resource.metadata.name === val.metadata.name) {
+          if (object.metadata.name === val.metadata.name) {
             this.namespacedData[clusterName][namespaceName][apiVersion][kind][
               index
-            ] = resource;
+            ] = object;
           }
         },
       );

@@ -23,10 +23,10 @@ export async function loadByNamespaceAPIVersionKind(
 
   const clusterUrl = dataStore.getClusterUrl(clusterName);
 
-  let url = `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
-
-  if (apiVersion == "v1")
-    url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`;
+  const url =
+    apiVersion == "v1"
+      ? `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`
+      : `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
 
   const res = await axios.get(url);
 
@@ -38,8 +38,40 @@ export async function loadByNamespaceAPIVersionKind(
     res.data.items,
   );
 
+  // watch for changes
+  await watchByNamespaceAPIVersionKind(
+    axios,
+    clusterName,
+    namespaceName,
+    apiVersion,
+    kind,
+    res.data.metadata.resourceVersion,
+  );
+}
+
+async function watchByNamespaceAPIVersionKind(
+  axios: Axios,
+  clusterName: string,
+  namespaceName: string,
+  apiVersion: string,
+  kind: string,
+  resourceVersion: string,
+) {
+  const dataStore = useDataStore();
+
+  const plural = pluralFromKind(kind);
+
+  const clusterUrl = dataStore.getClusterUrl(clusterName);
+
+  const url =
+    apiVersion == "v1"
+      ? `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`
+      : `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
+
+  const timeoutSeconds = 50; // less than 60 seconds
+
   fetch(
-    `${url}?resourceVersion=${res.data.metadata.resourceVersion}&watch=true`,
+    `${url}?resourceVersion=${resourceVersion}&watch=true&timeoutSeconds=${timeoutSeconds}`,
     {
       headers: {
         //@ts-ignore
@@ -55,6 +87,16 @@ export async function loadByNamespaceAPIVersionKind(
         reader.read().then(({ value, done }) => {
           if (done) {
             reader.cancel();
+
+            watchByNamespaceAPIVersionKind(
+              axios,
+              clusterName,
+              namespaceName,
+              apiVersion,
+              kind,
+              resourceVersion,
+            );
+
             return Promise.resolve();
           }
 
@@ -101,6 +143,8 @@ export async function loadByNamespaceAPIVersionKind(
               console.log(res);
           }
 
+          resourceVersion = res.object.metadata.resourceVersion;
+
           // do something if success
           // and cancel the stream
           // reader.cancel().catch(() => null);
@@ -109,7 +153,147 @@ export async function loadByNamespaceAPIVersionKind(
         });
       return readStream();
     } else {
-      return Promise.reject(res);
+      return Promise.reject();
+    }
+  });
+}
+
+export async function loadByAPIVersionKind(
+  axios: Axios,
+  clusterName: string,
+  apiVersion: string,
+  kind: string,
+) {
+  const dataStore = useDataStore();
+
+  const plural = pluralFromKind(kind);
+
+  const clusterUrl = dataStore.getClusterUrl(clusterName);
+
+  const url =
+    apiVersion == "v1"
+      ? `${clusterUrl}/api/v1/${plural}`
+      : `${clusterUrl}/apis/${apiVersion}/${plural}`;
+
+  const res = await axios.get(url);
+
+  dataStore.setList(clusterName, apiVersion, kind, res.data.items);
+
+  console.log(res.data);
+
+  // watch for changes
+  await watchByAPIVersionKind(
+    axios,
+    clusterName,
+    apiVersion,
+    kind,
+    res.data.metadata.resourceVersion,
+  );
+}
+
+async function watchByAPIVersionKind(
+  axios: Axios,
+  clusterName: string,
+  apiVersion: string,
+  kind: string,
+  resourceVersion: string,
+) {
+  console.log(
+    "watchByAPIVersionKind",
+    clusterName,
+    apiVersion,
+    kind,
+    resourceVersion,
+  );
+  const dataStore = useDataStore();
+
+  const plural = pluralFromKind(kind);
+
+  const clusterUrl = dataStore.getClusterUrl(clusterName);
+
+  const url =
+    apiVersion == "v1"
+      ? `${clusterUrl}/api/v1/${plural}`
+      : `${clusterUrl}/apis/${apiVersion}/${plural}`;
+
+  const timeoutSeconds = 50; // less than 60 seconds
+
+  fetch(
+    `${url}?resourceVersion=${resourceVersion}&watch=true&timeoutSeconds=${timeoutSeconds}`,
+    {
+      headers: {
+        //@ts-ignore
+        Authorization: axios.defaults.headers["Authorization"],
+      },
+    },
+  ).then((response) => {
+    if (response.ok && response.body) {
+      const reader = response.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader();
+      const readStream = (): Promise<any> =>
+        reader.read().then(({ value, done }) => {
+          if (done) {
+            reader.cancel();
+
+            watchByAPIVersionKind(
+              axios,
+              clusterName,
+              apiVersion,
+              kind,
+              resourceVersion,
+            );
+
+            return Promise.resolve();
+          }
+
+          // parse the data
+          const data = /{.*}/.exec(value);
+          if (!data || !data[0]) {
+            return readStream();
+          }
+
+          const res = JSON.parse(data[0]);
+          console.log(res);
+
+          switch (res.type) {
+            case "ADDED":
+              dataStore.addToList(clusterName, apiVersion, kind, res.object);
+
+              break;
+            case "DELETED":
+              dataStore.removeFromList(
+                clusterName,
+                apiVersion,
+                kind,
+                res.object,
+              );
+
+              break;
+            case "MODIFIED":
+              dataStore.replaceInList(
+                clusterName,
+                apiVersion,
+                kind,
+                res.object,
+              );
+
+              break;
+            default:
+              console.log(res);
+          }
+
+          resourceVersion = res.object.metadata.resourceVersion;
+
+          // do something if success
+          // and cancel the stream
+          // reader.cancel().catch(() => null);
+
+          return readStream();
+        });
+      return readStream();
+    } else {
+      return Promise.reject();
     }
   });
 }
@@ -157,14 +341,6 @@ export async function createByNamespaceAPIVersionKindName(
     url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
 
   await axios.post(url, body);
-
-  await loadByNamespaceAPIVersionKind(
-    axios,
-    clusterName,
-    namespaceName,
-    apiVersion,
-    kind,
-  );
 }
 
 export async function patchByNamespaceAPIVersionKindName(
@@ -188,14 +364,6 @@ export async function patchByNamespaceAPIVersionKindName(
     url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
 
   await axios.patch(url, body);
-
-  await loadByNamespaceAPIVersionKind(
-    axios,
-    clusterName,
-    namespaceName,
-    apiVersion,
-    kind,
-  );
 }
 
 export async function replaceByNamespaceAPIVersionKindName(
@@ -219,14 +387,6 @@ export async function replaceByNamespaceAPIVersionKindName(
     url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
 
   await axios.put(url, body);
-
-  await loadByNamespaceAPIVersionKind(
-    axios,
-    clusterName,
-    namespaceName,
-    apiVersion,
-    kind,
-  );
 }
 
 export async function deleteByNamespaceAPIVersionKindName(
@@ -249,12 +409,4 @@ export async function deleteByNamespaceAPIVersionKindName(
     url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
 
   await axios.delete(url);
-
-  await loadByNamespaceAPIVersionKind(
-    axios,
-    clusterName,
-    namespaceName,
-    apiVersion,
-    kind,
-  );
 }

@@ -49,10 +49,12 @@
             <h2 class="text-h2 flex-grow-1">Applications</h2>
             <v-btn :to="{ name: 'ApplicationsNew' }">New Application</v-btn>
           </v-col>
-          <ApplicationsList
-            :cluster-name="clusterName"
-            :namespace-name="namespaceName"
-          />
+          <v-col cols="12">
+            <ApplicationsList
+              :cluster-name="clusterName"
+              :namespace-name="namespaceName"
+            />
+          </v-col>
         </v-row>
       </v-col>
       <v-col cols="12" sm="12" md=" 12" lg="4" xl="3">

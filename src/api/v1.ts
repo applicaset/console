@@ -1,7 +1,7 @@
 import { Axios } from "axios";
-import { useDataStore } from "@/store/data";
 import {
   deleteByNamespaceAPIVersionKindName,
+  loadByAPIVersionKind,
   loadByNamespaceAPIVersionKind,
   replaceByNamespaceAPIVersionKindName,
 } from "@/api/api";
@@ -15,13 +15,7 @@ import {
 } from "@/types/v1";
 
 export async function loadNamespaces(axios: Axios, clusterName: string) {
-  const dataStore = useDataStore();
-
-  const clusterUrl = dataStore.getClusterUrl(clusterName);
-
-  const res = await axios.get(`${clusterUrl}/api/v1/namespaces`);
-
-  dataStore.setList(clusterName, "v1", "Namespace", res.data.items);
+  await loadByAPIVersionKind(axios, clusterName, "v1", "Namespace");
 }
 
 export async function loadResourceQuotas(
