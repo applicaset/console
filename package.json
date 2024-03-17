@@ -10,7 +10,6 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@fontsource/open-sans": "^5.0.27",
     "axios": "^1.6.8",
     "date-fns": "^3.5.0",
     "gravatar": "^1.8.2",
