@@ -179,8 +179,6 @@ export async function loadByAPIVersionKind(
 
   dataStore.setList(clusterName, apiVersion, kind, res.data.items);
 
-  console.log(res.data);
-
   // watch for changes
   await watchByAPIVersionKind(
     axios,
@@ -198,13 +196,6 @@ async function watchByAPIVersionKind(
   kind: string,
   resourceVersion: string,
 ) {
-  console.log(
-    "watchByAPIVersionKind",
-    clusterName,
-    apiVersion,
-    kind,
-    resourceVersion,
-  );
   const dataStore = useDataStore();
 
   const plural = pluralFromKind(kind);
@@ -254,7 +245,6 @@ async function watchByAPIVersionKind(
           }
 
           const res = JSON.parse(data[0]);
-          console.log(res);
 
           switch (res.type) {
             case "ADDED":
