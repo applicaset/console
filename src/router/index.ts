@@ -15,6 +15,7 @@ import NamespaceDashboard from "@/views/clusters/cluster/namespaces/namespace/Da
 import Applications from "@/views/clusters/cluster/namespaces/namespace/applications/Index.vue";
 import ApplicationsList from "@/views/clusters/cluster/namespaces/namespace/applications/List.vue";
 import ApplicationsNew from "@/views/clusters/cluster/namespaces/namespace/applications/new/Index.vue";
+import ApplicationsNewManifest from "@/views/clusters/cluster/namespaces/namespace/applications/new/manifest/Index.vue";
 import ApplicationsNewGit from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/Index.vue";
 import ApplicationsNewGitGithub from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/github/Index.vue";
 
@@ -174,6 +175,12 @@ const routes = [
                             name: "ApplicationsNewGitGithub",
                             meta: { title: "New GitHub Application" },
                             component: ApplicationsNewGitGithub,
+                          },
+                          {
+                            path: "new/manifest",
+                            name: "ApplicationsNewManifest",
+                            meta: { title: "New Application from Manifest" },
+                            component: ApplicationsNewManifest,
                           },
                         ],
                       },

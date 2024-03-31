@@ -10,7 +10,10 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@codemirror/lang-yaml": "^6.0.0",
+    "@codemirror/theme-one-dark": "^6.1.2",
     "axios": "^1.6.8",
+    "codemirror": "^6.0.1",
     "date-fns": "^3.5.0",
     "gravatar": "^1.8.2",
     "js-yaml": "^4.1.0",
@@ -19,6 +22,7 @@
     "roboto-fontface": "^0.10.0",
     "vue": "^3.4.21",
     "vue-axios": "^3.5.2",
+    "vue-codemirror": "^6.1.1",
     "vue-i18n": "^9.10.2",
     "vue-page-title": "^2.2.2",
     "vue-router": "^4.3.0",

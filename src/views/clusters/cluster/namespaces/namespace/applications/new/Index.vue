@@ -51,5 +51,11 @@ const methods = [
     icon: "mdi-package",
     disabled: true,
   },
+  {
+    title: "From Manifest",
+    description: "Deploy applications from Kubernetes manifest files.",
+    icon: "mdi-script-text-outline",
+    to: { name: "ApplicationsNewManifest" },
+  },
 ];
 </script>

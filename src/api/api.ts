@@ -316,8 +316,8 @@ export async function createByNamespaceAPIVersionKindName(
   namespaceName: string,
   apiVersion: string,
   kind: string,
-  name: string,
   body: any,
+  dryRun: boolean = false,
 ) {
   const dataStore = useDataStore();
 
@@ -325,10 +325,14 @@ export async function createByNamespaceAPIVersionKindName(
 
   const clusterUrl = dataStore.getClusterUrl(clusterName);
 
-  let url = `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}/${name}`;
+  let url = `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
 
   if (apiVersion == "v1")
-    url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
+    url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`;
+
+  if (dryRun) {
+    url += "?dryRun=All";
+  }
 
   await axios.post(url, body);
 }
