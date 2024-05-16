@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-card variant="outlined">
+        <v-card>
           <v-data-table-virtual
             :headers="headers"
             :items="

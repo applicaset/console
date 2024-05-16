@@ -1,4 +1,5 @@
 import { ObjectMeta, Time } from "@/types/meta-v1";
+import { BaseResource } from "@/types/resource";
 
 type NamespaceSpec = {
   finalizers?: string[];
@@ -11,10 +12,9 @@ type NamespaceStatus = {
   phase: string;
 };
 
-export type Namespace = {
+export type Namespace = BaseResource & {
   apiVersion: "v1";
   kind: "Namespace";
-  metadata: ObjectMeta;
   spec: NamespaceSpec;
   readonly status?: NamespaceStatus;
 };
@@ -42,10 +42,9 @@ export type PodStatus = {
   phase: "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
 };
 
-export type Pod = {
+export type Pod = BaseResource & {
   apiVersion: "v1";
   kind: "Pod";
-  metadata: ObjectMeta;
   spec: PodSpec;
   readonly status?: PodStatus;
 };
@@ -54,10 +53,9 @@ type ConfigMapSpec = {};
 
 type ConfigMapStatus = {};
 
-export type ConfigMap = {
+export type ConfigMap = BaseResource & {
   apiVersion: "v1";
   kind: "ConfigMap";
-  metadata: ObjectMeta;
   spec: ConfigMapSpec;
   readonly status?: ConfigMapStatus;
 };
@@ -66,10 +64,9 @@ type ServiceSpec = {};
 
 type ServiceStatus = {};
 
-export type Service = {
+export type Service = BaseResource & {
   apiVersion: "v1";
   kind: "Service";
-  metadata: ObjectMeta;
   spec: ServiceSpec;
   readonly status?: ServiceStatus;
 };
@@ -78,10 +75,9 @@ type ServiceAccountSpec = {};
 
 type ServiceAccountStatus = {};
 
-export type ServiceAccount = {
+export type ServiceAccount = BaseResource & {
   apiVersion: "v1";
   kind: "ServiceAccount";
-  metadata: ObjectMeta;
   spec: ServiceAccountSpec;
   readonly status?: ServiceAccountStatus;
 };
@@ -90,10 +86,9 @@ type SecretSpec = {};
 
 type SecretStatus = {};
 
-export type Secret = {
+export type Secret = BaseResource & {
   apiVersion: "v1";
   kind: "Secret";
-  metadata: ObjectMeta;
   spec: SecretSpec;
   readonly status?: SecretStatus;
 };
@@ -102,10 +97,9 @@ type PersistentVolumeClaimSpec = {};
 
 type PersistentVolumeClaimStatus = {};
 
-export type PersistentVolumeClaim = {
+export type PersistentVolumeClaim = BaseResource & {
   apiVersion: "v1";
   kind: "PersistentVolumeClaim";
-  metadata: ObjectMeta;
   spec: PersistentVolumeClaimSpec;
   readonly status?: PersistentVolumeClaimStatus;
 };
@@ -120,10 +114,9 @@ export type ObjectReference = {
   uid: string;
 };
 
-export type Event = {
+export type Event = BaseResource & {
   apiVersion: "v1";
   kind: "Event";
-  metadata: ObjectMeta;
   action: string;
   involvedObject: ObjectReference;
   lastTimestamp: Time;

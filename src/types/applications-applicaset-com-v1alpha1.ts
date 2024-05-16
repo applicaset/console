@@ -1,4 +1,5 @@
 import { ObjectMeta } from "@/types/meta-v1";
+import { BaseResource } from "@/types/resource";
 
 export const API_VERSION = "applications.applicaset.com/v1alpha1";
 export const GIT_HUB_INSTALLATION_KIND = "GitHubInstallation";
@@ -13,10 +14,9 @@ type GitHubInstallationStatus = {
   readyReplicas: number;
 };
 
-export type GitHubInstallation = {
+export type GitHubInstallation = BaseResource & {
   apiVersion: "applications.applicaset.com/v1alpha1";
   kind: "GitHubInstallation";
-  metadata: ObjectMeta;
   spec: GitHubInstallationSpec;
   readonly status?: GitHubInstallationStatus;
 };

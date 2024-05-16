@@ -16,7 +16,7 @@
     <template #default="{ items }">
       <v-row>
         <v-col cols="12" v-for="item in items" :key="item.raw">
-          <v-card :title="item.raw" variant="outlined">
+          <v-card :title="item.raw">
             <v-card-text>
               <v-list>
                 <v-list-item

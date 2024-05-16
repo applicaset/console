@@ -16,7 +16,14 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node", "vuetify", "gravatar", "js-yaml", "vite-svg-loader", "pinia-plugin-persistedstate"]
+    "types": [
+      "node",
+      "vuetify",
+      "gravatar",
+      "js-yaml",
+      "vite-svg-loader",
+      "pinia-plugin-persistedstate"
+    ]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [

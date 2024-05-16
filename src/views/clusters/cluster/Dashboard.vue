@@ -14,7 +14,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-card variant="outlined">
+        <v-card>
           <v-card-text>
             <p>
               To connect to the cluster, you need to have
@@ -47,7 +47,7 @@ kubectl config use-context applicaset-oidc@{{ clusterName }}</code>
     </v-row>
     <v-row>
       <v-col cols="12" sm="6" md="4" lg="3" xl="2">
-        <v-card variant="outlined" :to="{ name: 'Namespaces' }">
+        <v-card :to="{ name: 'Namespaces' }">
           <v-card-title class="text-center">Namespaces</v-card-title>
         </v-card>
       </v-col>

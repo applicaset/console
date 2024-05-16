@@ -1,4 +1,5 @@
 import { ObjectMeta } from "@/types/meta-v1";
+import { BaseResource } from "@/types/resource";
 
 type NonResourceAttributes = {
   path: string;
@@ -35,10 +36,9 @@ type SelfSubjectAccessReviewStatus = {
   reason?: string;
 };
 
-export type SelfSubjectAccessReview = {
+export type SelfSubjectAccessReview = BaseResource & {
   apiVersion: "authorization.k8s.io/v1";
   kind: "SelfSubjectAccessReview";
-  metadata: ObjectMeta;
   spec: SelfSubjectAccessReviewSpec;
   readonly status: SelfSubjectAccessReviewStatus;
 };

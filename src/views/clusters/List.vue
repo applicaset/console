@@ -21,10 +21,7 @@ if (clusterNames.length === 1) {
     </v-row>
     <v-row>
       <v-col cols="12" v-for="(val, key) in getClusters" :key="key">
-        <v-card
-          variant="outlined"
-          :to="{ name: 'Cluster', params: { clusterName: key } }"
-        >
+        <v-card :to="{ name: 'Cluster', params: { clusterName: key } }">
           <v-card-title class="text-center">{{ key }}</v-card-title>
           <v-card-subtitle class="text-center pb-2">{{ val }}</v-card-subtitle>
         </v-card>

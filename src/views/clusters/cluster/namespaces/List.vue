@@ -127,7 +127,6 @@ function showAddNamespaceDialog() {
         :key="namespace.metadata.uid"
       >
         <v-card
-          variant="outlined"
           :to="{
             name: 'Namespace',
             params: { namespaceName: namespace.metadata.name },

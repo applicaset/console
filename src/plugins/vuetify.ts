@@ -18,7 +18,9 @@ const vuetify = createVuetify({
       // },
       light: {
         colors: {
-          primary: "#008b8b",
+          background: "#F3F4F6",
+          surface: "#FFFFFF",
+          primary: "#008B8B",
           secondary: "#8B008B",
           // tertiary: "#8B8B00",
           success: "#00AA00",
@@ -50,6 +52,7 @@ const vuetify = createVuetify({
     },
     VCard: {
       rounded: "md",
+      variant: "flat",
     },
     VBtn: {
       rounded: "md",

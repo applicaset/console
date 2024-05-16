@@ -1,5 +1,6 @@
 import { useDataStore } from "@/store/data";
 import { Axios } from "axios";
+import { BaseResource } from "@/types/resource";
 
 export function pluralFromKind(kind: string): string {
   switch (kind) {
@@ -310,7 +311,9 @@ export async function createByAPIVersionKind(
   return res.data;
 }
 
-export async function createByNamespaceAPIVersionKindName<T>(
+export async function createByNamespaceAPIVersionKindName<
+  T extends BaseResource,
+>(
   axios: Axios,
   clusterName: string,
   namespaceName: string,

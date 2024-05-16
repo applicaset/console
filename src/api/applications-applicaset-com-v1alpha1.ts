@@ -42,7 +42,7 @@ export async function upsertGitHubInstallation(
     GIT_HUB_INSTALLATION_KIND,
   );
 
-  let gitHubInstallation = gitHubInstallations.find(
+  const gitHubInstallation = gitHubInstallations.find(
     (installation) => installation.spec.id === installationId,
   );
 

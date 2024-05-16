@@ -1,5 +1,6 @@
 import { ObjectMeta, Time } from "@/types/meta-v1";
 import { ObjectReference } from "@/types/v1";
+import { BaseResource } from "@/types/resource";
 
 type JobSpec = {
   completions: number;
@@ -23,10 +24,9 @@ type JobStatus = {
   uncountedTerminatedPods: UncountedTerminatedPods;
 };
 
-export type Job = {
+export type Job = BaseResource & {
   apiVersion: "batch/v1";
   kind: "Job";
-  metadata: ObjectMeta;
   spec: JobSpec;
   readonly status?: JobStatus;
 };
@@ -39,10 +39,9 @@ type CronJobStatus = {
   lastSuccessfulTime: Time;
 };
 
-export type CronJob = {
+export type CronJob = BaseResource & {
   apiVersion: "batch/v1";
   kind: "CronJob";
-  metadata: ObjectMeta;
   spec: CronJobSpec;
   readonly status?: CronJobStatus;
 };

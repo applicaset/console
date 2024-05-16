@@ -1,4 +1,5 @@
 import { ObjectMeta } from "@/types/meta-v1";
+import { BaseResource } from "@/types/resource";
 
 type StatefulSetSpec = {};
 
@@ -7,10 +8,9 @@ type StatefulSetStatus = {
   readyReplicas: number;
 };
 
-export type StatefulSet = {
+export type StatefulSet = BaseResource & {
   apiVersion: "apps/v1";
   kind: "StatefulSet";
-  metadata: ObjectMeta;
   spec: StatefulSetSpec;
   readonly status?: StatefulSetStatus;
 };
@@ -22,10 +22,9 @@ type DeploymentStatus = {
   readyReplicas: number;
 };
 
-export type Deployment = {
+export type Deployment = BaseResource & {
   apiVersion: "apps/v1";
   kind: "Deployment";
-  metadata: ObjectMeta;
   spec: DeploymentSpec;
   readonly status?: DeploymentStatus;
 };

@@ -28,7 +28,7 @@
             xl="2"
             :key="item.title"
           >
-            <v-card variant="outlined">
+            <v-card>
               <v-card-text class="text-center">
                 <v-progress-circular
                   :model-value="item.percentage"
@@ -85,7 +85,7 @@
                 v-for="{ raw: event } in items"
                 :key="event.metadata.uid"
               >
-                <v-card variant="outlined">
+                <v-card>
                   <template v-slot:prepend>
                     <v-icon :color="eventTypeColor(event.type)" size="x-small">
                       mdi-circle

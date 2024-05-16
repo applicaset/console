@@ -15,7 +15,7 @@
         <h2 class="text-h2">Select Method</h2>
       </v-col>
       <v-col cols="12" v-for="method in methods" :key="method.title">
-        <v-card variant="outlined" :disabled="method.disabled" :to="method.to">
+        <v-card :disabled="method.disabled" :to="method.to">
           <div class="d-flex flex-no-wrap">
             <v-icon :size="100" class="ma-4">{{ method.icon }}</v-icon>
             <div>
