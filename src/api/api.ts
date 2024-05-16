@@ -310,13 +310,13 @@ export async function createByAPIVersionKind(
   return res.data;
 }
 
-export async function createByNamespaceAPIVersionKindName(
+export async function createByNamespaceAPIVersionKindName<T>(
   axios: Axios,
   clusterName: string,
   namespaceName: string,
   apiVersion: string,
   kind: string,
-  body: any,
+  body: Partial<T>,
   dryRun: boolean = false,
 ) {
   const dataStore = useDataStore();
@@ -333,6 +333,9 @@ export async function createByNamespaceAPIVersionKindName(
   if (dryRun) {
     url += "?dryRun=All";
   }
+
+  body.kind = kind;
+  body.apiVersion = apiVersion;
 
   await axios.post(url, body);
 }
@@ -357,7 +360,11 @@ export async function patchByNamespaceAPIVersionKindName(
   if (apiVersion == "v1")
     url = `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}/${name}`;
 
-  await axios.patch(url, body);
+  await axios.patch(url, body, {
+    headers: {
+      "Content-Type": "application/merge-patch+json",
+    },
+  });
 }
 
 export async function replaceByNamespaceAPIVersionKindName(

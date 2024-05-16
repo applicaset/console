@@ -18,6 +18,7 @@ import ApplicationsNew from "@/views/clusters/cluster/namespaces/namespace/appli
 import ApplicationsNewManifest from "@/views/clusters/cluster/namespaces/namespace/applications/new/manifest/Index.vue";
 import ApplicationsNewGit from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/Index.vue";
 import ApplicationsNewGitGithub from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/github/Index.vue";
+import ApplicationsNewGitGithubCallback from "@/views/clusters/cluster/namespaces/namespace/applications/new/git/github/Callback.vue";
 
 import Pods from "@/views/clusters/cluster/namespaces/namespace/pods/Index.vue";
 import PodsList from "@/views/clusters/cluster/namespaces/namespace/pods/List.vue";
@@ -85,6 +86,7 @@ import CronJobs from "@/views/clusters/cluster/namespaces/namespace/cronjobs/Ind
 import CronJobsList from "@/views/clusters/cluster/namespaces/namespace/cronjobs/List.vue";
 import CronJob from "@/views/clusters/cluster/namespaces/namespace/cronjobs/cronjob/Index.vue";
 import CronJobEdit from "@/views/clusters/cluster/namespaces/namespace/cronjobs/cronjob/Edit.vue";
+import { useDataStore } from "@/store/data";
 
 const routes = [
   {
@@ -175,6 +177,12 @@ const routes = [
                             name: "ApplicationsNewGitGithub",
                             meta: { title: "New GitHub Application" },
                             component: ApplicationsNewGitGithub,
+                          },
+                          {
+                            path: "new/git/github/callback",
+                            name: "ApplicationsNewGitGithubCallback",
+                            meta: { title: "New GitHub Application Callback" },
+                            component: ApplicationsNewGitGithubCallback,
                           },
                           {
                             path: "new/manifest",
@@ -542,6 +550,44 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.params.clusterName === "current") {
+    console.log("current cluster");
+    const dataStore = useDataStore();
+
+    const currentClusterName = dataStore.getCurrentClusterName;
+
+    if (currentClusterName) {
+      to.params.clusterName = currentClusterName;
+
+      if (to.params.namespaceName === "current") {
+        console.log("current namespace");
+        const currentNamespaceName = dataStore.getCurrentNamespaceName;
+
+        if (currentNamespaceName) {
+          to.params.namespaceName = currentNamespaceName;
+        } else {
+          console.log("no current namespace");
+          next({
+            name: "NamespacesList",
+            params: { clusterName: currentClusterName },
+          });
+
+          return;
+        }
+      }
+    } else {
+      next({ name: "Clusters" });
+
+      return;
+    }
+
+    next(to);
+  }
+
+  next();
 });
 
 export default router;

@@ -58,6 +58,7 @@ const checkOrSetNamespacedKind =
   };
 
 export const useDataStore = defineStore("data", {
+  persist: true,
   state: () => ({
     // clusters is a map of cluster name and cluster url
     clusters: {} as { [clusterName: string]: string },
@@ -77,6 +78,8 @@ export const useDataStore = defineStore("data", {
     },
     //
     applications: {} as { [key: string]: any },
+    currentClusterName: undefined as string | undefined,
+    currentNamespaceName: undefined as string | undefined,
   }),
   getters: {
     // getClusters returns list of clusters as an object with cluster name as key and cluster url as value
@@ -171,6 +174,8 @@ export const useDataStore = defineStore("data", {
             instance,
         );
       },
+    getCurrentClusterName: (state) => state.currentClusterName,
+    getCurrentNamespaceName: (state) => state.currentNamespaceName,
   },
   actions: {
     setClusters(clusters: { [key: string]: string }) {
@@ -300,6 +305,12 @@ export const useDataStore = defineStore("data", {
           }
         },
       );
+    },
+    setCurrentClusterName(clusterName: string) {
+      this.currentClusterName = clusterName;
+    },
+    setCurrentNamespaceName(namespaceName: string) {
+      this.currentNamespaceName = namespaceName;
     },
   },
 });

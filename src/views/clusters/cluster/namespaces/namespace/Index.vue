@@ -21,13 +21,22 @@ import {
   loadRoleBindings,
   loadRoles,
 } from "@/api/rbac-authorization-k8s-io-v1";
+import { useDataStore } from "@/store/data";
+import { loadByNamespaceAPIVersionKind } from "@/api/api";
+import { loadGitHubInstallations } from "@/api/applications-applicaset-com-v1alpha1";
 
 const route = useRoute();
 
 const axios: any = inject("axios");
 
+const dataStore = useDataStore();
+
 const clusterName = route.params.clusterName as string;
 const namespaceName = route.params.namespaceName as string;
+
+if (namespaceName !== "current") {
+  dataStore.setCurrentNamespaceName(namespaceName);
+}
 
 loadResourceQuotas(axios, clusterName, namespaceName);
 loadEvents(axios, clusterName, namespaceName);

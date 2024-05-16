@@ -19,6 +19,7 @@
     "js-yaml": "^4.1.0",
     "keycloak-js": "^24.0.1",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "^0.10.0",
     "vue": "^3.4.21",
     "vue-axios": "^3.5.2",

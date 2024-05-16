@@ -90,8 +90,8 @@ async function submit() {
         return;
       }
 
-      await deploy(objs, true);
-      await deploy(objs, false);
+      await deploy(obj, true);
+      await deploy(obj, false);
     }
 
     console.log("Deployed successfully");
@@ -104,17 +104,15 @@ async function submit() {
   }
 }
 
-async function deploy(objs: any[], dryRun: boolean) {
-  for (const obj of objs) {
-    await createByNamespaceAPIVersionKindName(
-      axios,
-      clusterName,
-      namespaceName,
-      obj.apiVersion,
-      obj.kind,
-      obj,
-      dryRun,
-    );
-  }
+async function deploy(obj: any, dryRun: boolean) {
+  await createByNamespaceAPIVersionKindName(
+    axios,
+    clusterName,
+    namespaceName,
+    obj.apiVersion,
+    obj.kind,
+    obj,
+    dryRun,
+  );
 }
 </script>

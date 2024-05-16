@@ -1,8 +1,17 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <h2 class="text-h2">Applications</h2>
+      <v-btn
+        variant="plain"
+        prepend-icon="mdi-chevron-left"
+        :to="{ name: 'NamespaceDashboard' }"
+        >Back to Dashboard</v-btn
+      >
+    </v-row>
+    <v-row>
+      <v-col class="d-flex align-center">
+        <h2 class="text-h2 flex-grow-1">Applications</h2>
+        <v-btn :to="{ name: 'ApplicationsNew' }">New Application</v-btn>
       </v-col>
     </v-row>
     <v-row>

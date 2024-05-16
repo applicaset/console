@@ -19,7 +19,6 @@
         <v-btn
           color="primary"
           href="https://github.com/apps/applicaset/installations/new"
-          target="_blank"
           >Give Access to GitHub</v-btn
         >
         <v-alert type="info" variant="text">

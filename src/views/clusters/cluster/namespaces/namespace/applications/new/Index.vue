@@ -36,6 +36,7 @@ const methods = [
       "You can connect to your git repository and automate building and deploying your application seamless.",
     icon: "mdi-git",
     to: { name: "ApplicationsNewGit" },
+    disabled: true,
   },
   {
     title: "From Container Image",
