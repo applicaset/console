@@ -4,10 +4,11 @@ import { createVuetify, VuetifyOptions } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import { VSnackbarQueue } from "vuetify/labs/VSnackbarQueue";
 
 const opts: VuetifyOptions = {
   blueprint: md3,
-  components,
+  components: { ...components, VSnackbarQueue },
   directives,
   theme: {
     defaultTheme: "light",

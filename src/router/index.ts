@@ -87,6 +87,7 @@ import CronJobsList from "@/views/clusters/cluster/namespaces/namespace/cronjobs
 import CronJob from "@/views/clusters/cluster/namespaces/namespace/cronjobs/cronjob/Index.vue";
 import CronJobEdit from "@/views/clusters/cluster/namespaces/namespace/cronjobs/cronjob/Edit.vue";
 import { useDataStore } from "@/store/data";
+import { useNotificationsStore } from "@/store/notifications";
 
 const routes = [
   {
@@ -553,8 +554,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const notificationsStore = useNotificationsStore();
+
   if (to.params.clusterName === "current") {
-    console.log("current cluster");
+    notificationsStore.addInfo("Switching to current cluster");
     const dataStore = useDataStore();
 
     const currentClusterName = dataStore.getCurrentClusterName;
@@ -563,13 +566,13 @@ router.beforeEach((to, from, next) => {
       to.params.clusterName = currentClusterName;
 
       if (to.params.namespaceName === "current") {
-        console.log("current namespace");
+        notificationsStore.addInfo("Switching to current namespace");
         const currentNamespaceName = dataStore.getCurrentNamespaceName;
 
         if (currentNamespaceName) {
           to.params.namespaceName = currentNamespaceName;
         } else {
-          console.log("no current namespace");
+          notificationsStore.addError("No current namespace");
           next({
             name: "NamespacesList",
             params: { clusterName: currentClusterName },

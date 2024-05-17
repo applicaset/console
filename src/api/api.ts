@@ -1,6 +1,7 @@
 import { useDataStore } from "@/store/data";
 import { Axios } from "axios";
 import { BaseResource } from "@/types/resource";
+import { useNotificationsStore } from "@/store/notifications";
 
 export function pluralFromKind(kind: string): string {
   switch (kind) {
@@ -59,6 +60,7 @@ async function watchByNamespaceAPIVersionKind(
   resourceVersion: string,
 ) {
   const dataStore = useDataStore();
+  const notificationsStore = useNotificationsStore();
 
   const plural = pluralFromKind(kind);
 
@@ -141,7 +143,7 @@ async function watchByNamespaceAPIVersionKind(
 
               break;
             default:
-              console.log(res);
+              notificationsStore.addWarning(res);
           }
 
           resourceVersion = res.object.metadata.resourceVersion;
@@ -198,6 +200,7 @@ async function watchByAPIVersionKind(
   resourceVersion: string,
 ) {
   const dataStore = useDataStore();
+  const notificationsStore = useNotificationsStore();
 
   const plural = pluralFromKind(kind);
 
@@ -271,7 +274,7 @@ async function watchByAPIVersionKind(
 
               break;
             default:
-              console.log(res);
+              notificationsStore.addWarning(res);
           }
 
           resourceVersion = res.object.metadata.resourceVersion;

@@ -6,6 +6,7 @@ import { useDataStore } from "@/store/data";
 import { storeToRefs } from "pinia";
 import { canI } from "@/api/authorization-k8s-io-v1";
 import router from "@/router";
+import { useNotificationsStore } from "@/store/notifications";
 
 const route = useRoute();
 
@@ -14,6 +15,7 @@ const axios: any = inject("axios");
 const clusterName = route.params.clusterName as string;
 
 const dataStore = useDataStore();
+const notificationsStore = useNotificationsStore();
 
 const { getList } = storeToRefs(dataStore);
 
@@ -44,7 +46,9 @@ async function createNamespace() {
     } as Namespace;
 
     await axios.post(`${clusterUrl}/api/v1/namespaces`, newNamespace);
-    console.log(`Namespace '${newNamespaceName.value}' created successfully.`);
+    notificationsStore.addSuccess(
+      `Namespace '${newNamespaceName.value}' created successfully.`,
+    );
     await router.push({
       name: "Namespace",
       params: { namespaceName: newNamespaceName.value },

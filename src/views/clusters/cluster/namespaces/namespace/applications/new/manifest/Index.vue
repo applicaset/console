@@ -41,10 +41,13 @@ import jsYaml from "js-yaml";
 import { useRoute } from "vue-router";
 import { createByNamespaceAPIVersionKindName } from "@/api/api";
 import router from "@/router";
+import { useNotificationsStore } from "@/store/notifications";
 
 const route = useRoute();
 
 const axios: any = inject("axios");
+
+const notificationsStore = useNotificationsStore();
 
 const clusterName = route.params.clusterName as string;
 const namespaceName = route.params.namespaceName as string;
@@ -86,7 +89,7 @@ async function submit() {
         !obj.metadata ||
         !obj.metadata.name
       ) {
-        console.error("Invalid manifest");
+        notificationsStore.addError("Invalid manifest");
         return;
       }
 
@@ -94,13 +97,13 @@ async function submit() {
       await deploy(obj, false);
     }
 
-    console.log("Deployed successfully");
+    notificationsStore.addSuccess("Deployed successfully");
 
     await router.push({
       name: "Applications",
     });
   } catch (e) {
-    console.error(e);
+    notificationsStore.addError(e);
   }
 }
 
