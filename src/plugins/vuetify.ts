@@ -1,11 +1,11 @@
 import "@mdi/font/css/materialdesignicons.css";
 import "@/styles/main.scss";
-import { createVuetify } from "vuetify";
+import { createVuetify, VuetifyOptions } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-const vuetify = createVuetify({
+const opts: VuetifyOptions = {
   blueprint: md3,
   components,
   directives,
@@ -22,11 +22,10 @@ const vuetify = createVuetify({
           surface: "#FFFFFF",
           primary: "#008B8B",
           secondary: "#8B008B",
-          // tertiary: "#8B8B00",
           success: "#00AA00",
-          info: "#2196F3",
-          error: "#FF5252",
           warning: "#FB8C00",
+          error: "#FF5252",
+          info: "#2196F3",
         },
       },
       dark: {
@@ -34,11 +33,10 @@ const vuetify = createVuetify({
         colors: {
           primary: "#008b8b",
           secondary: "#36b68a",
-          // tertiary: "#8B8B00",
           success: "#00AA00",
-          info: "#2196F3",
-          error: "#FF5252",
           warning: "#FB8C00",
+          error: "#FF5252",
+          info: "#2196F3",
         },
       },
     },
@@ -64,6 +62,8 @@ const vuetify = createVuetify({
       persistentPlaceholder: true,
     },
   },
-});
+};
+
+const vuetify = createVuetify(opts);
 
 export default vuetify;
