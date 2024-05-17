@@ -71,7 +71,7 @@ async function watchByNamespaceAPIVersionKind(
       ? `${clusterUrl}/api/v1/namespaces/${namespaceName}/${plural}`
       : `${clusterUrl}/apis/${apiVersion}/namespaces/${namespaceName}/${plural}`;
 
-  const timeoutSeconds = 50; // less than 60 seconds
+  const timeoutSeconds = 55; // less than 60 seconds
 
   fetch(
     `${url}?resourceVersion=${resourceVersion}&watch=true&timeoutSeconds=${timeoutSeconds}`,
@@ -211,7 +211,7 @@ async function watchByAPIVersionKind(
       ? `${clusterUrl}/api/v1/${plural}`
       : `${clusterUrl}/apis/${apiVersion}/${plural}`;
 
-  const timeoutSeconds = 50; // less than 60 seconds
+  const timeoutSeconds = 55; // less than 60 seconds
 
   fetch(
     `${url}?resourceVersion=${resourceVersion}&watch=true&timeoutSeconds=${timeoutSeconds}`,

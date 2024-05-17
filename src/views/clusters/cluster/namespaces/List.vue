@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import { canI } from "@/api/authorization-k8s-io-v1";
 import router from "@/router";
 import { useNotificationsStore } from "@/store/notifications";
+import { AxiosError } from "axios";
 
 const route = useRoute();
 
@@ -55,6 +56,12 @@ async function createNamespace() {
     });
     newNamespaceName.value = "";
     addNamespaceDialog.value = false;
+  } catch (e: any) {
+    if (e instanceof AxiosError && e.response?.data.kind === "Status") {
+      notificationsStore.addError(e.response?.data.message);
+    } else {
+      notificationsStore.addError(e.toString());
+    }
   } finally {
     creatingNamespace.value = false;
   }

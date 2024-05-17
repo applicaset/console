@@ -24,9 +24,13 @@
           />
         </v-col>
         <v-col cols="12">
-          <v-btn color="primary" prepend-icon="mdi-check" type="submit"
-            >Deploy</v-btn
-          >
+          <v-btn
+            color="primary"
+            prepend-icon="mdi-check"
+            type="submit"
+            text="Deploy"
+            :loading="submitting"
+          />
         </v-col>
       </v-row>
     </v-form>
@@ -42,6 +46,7 @@ import { useRoute } from "vue-router";
 import { createByNamespaceAPIVersionKindName } from "@/api/api";
 import router from "@/router";
 import { useNotificationsStore } from "@/store/notifications";
+import { AxiosError } from "axios";
 
 const route = useRoute();
 
@@ -71,12 +76,18 @@ spec:
       containers:
       - name: nginx
         image: nginx:1.14.2
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 `);
+
 const extensions = [yaml(), oneDark];
 
+const submitting = ref(false);
+
 async function submit() {
+  submitting.value = true;
+
   try {
     const objs = jsYaml.loadAll(code.value) as any[];
 
@@ -102,8 +113,14 @@ async function submit() {
     await router.push({
       name: "Applications",
     });
-  } catch (e) {
-    notificationsStore.addError(e);
+  } catch (e: any) {
+    if (e instanceof AxiosError && e.response?.data.kind === "Status") {
+      notificationsStore.addError(e.response?.data.message);
+    } else {
+      notificationsStore.addError(e.toString());
+    }
+  } finally {
+    submitting.value = false;
   }
 }
 
