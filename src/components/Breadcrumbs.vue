@@ -8,8 +8,17 @@ const items = computed((): any[] => {
   return route.matched
     .filter((item) => !item.meta?.hideCrumb)
     .map((item) => {
+      let title = item.name as string;
+      if (!!item.meta?.title) {
+        if (item.meta.title instanceof Function) {
+          title = item.meta.title(route);
+        } else {
+          title = item.meta.title as string;
+        }
+      }
+
       return {
-        title: item.meta?.title || item.name,
+        title: title,
         to: {
           name: item.name,
           params: Object.keys(route.params)
@@ -23,8 +32,12 @@ const items = computed((): any[] => {
 });
 </script>
 <template>
-  <v-breadcrumbs :items="items" icon="mdi-home">
-    <template v-slot:divider>
+  <v-breadcrumbs
+    :items="items"
+    icon="mdi-home"
+    class="text-no-wrap overflow-x-auto"
+  >
+    <template #divider>
       <v-icon icon="mdi-chevron-right"></v-icon>
     </template>
   </v-breadcrumbs>

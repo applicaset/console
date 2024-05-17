@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  RouteLocation,
+  RouteLocationMatched,
+} from "vue-router";
 
 import Index from "@/views/Index.vue";
 
@@ -114,7 +119,10 @@ const routes = [
             path: ":clusterName",
             name: "Cluster",
             component: Cluster,
-            meta: { title: "Cluster A" },
+            meta: {
+              title: (route: RouteLocation) =>
+                `Cluster '${route.params["clusterName"]}'`,
+            },
             redirect: { name: "ClusterDashboard" },
             children: [
               {
@@ -140,7 +148,10 @@ const routes = [
                     path: ":namespaceName",
                     name: "Namespace",
                     component: Namespace,
-                    meta: { title: "Namespace A" },
+                    meta: {
+                      title: (route: RouteLocation) =>
+                        `Namespace '${route.params["namespaceName"]}'`,
+                    },
                     redirect: { name: "NamespaceDashboard" },
                     children: [
                       {
