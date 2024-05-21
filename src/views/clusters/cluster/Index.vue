@@ -3,7 +3,7 @@ import { loadNamespaces } from "@/api/v1";
 import { useRoute } from "vue-router";
 import { inject, ref } from "vue";
 import { useDataStore } from "@/store/data";
-import router from "@/router";
+import { loadOCIRepositories } from "@/api/source-toolkit-fluxcd-io-v1beta2";
 
 const route = useRoute();
 
@@ -19,9 +19,13 @@ if (clusterName !== "current") {
 
 const initializing = ref(true);
 
-loadNamespaces(axios, clusterName as string).then(
-  () => (initializing.value = false),
-);
+async function load() {
+  await loadNamespaces(axios, clusterName);
+  await loadOCIRepositories(axios, clusterName, "flux-system");
+  initializing.value = false;
+}
+
+load();
 </script>
 
 <template>

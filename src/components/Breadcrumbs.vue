@@ -9,7 +9,7 @@ const items = computed((): any[] => {
     .filter((item) => !item.meta?.hideCrumb)
     .map((item) => {
       let title = item.name as string;
-      if (!!item.meta?.title) {
+      if (item.meta?.title) {
         if (item.meta.title instanceof Function) {
           title = item.meta.title(route);
         } else {

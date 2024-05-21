@@ -67,4 +67,16 @@ const opts: VuetifyOptions = {
 
 const vuetify = createVuetify(opts);
 
+vuetify.theme.global.name.value = window.matchMedia(
+  "(prefers-color-scheme: dark)",
+).matches
+  ? "dark"
+  : "light";
+
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", ({ matches }) => {
+    vuetify.theme.global.name.value = matches ? "dark" : "light";
+  });
+
 export default vuetify;

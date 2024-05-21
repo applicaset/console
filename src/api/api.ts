@@ -7,6 +7,8 @@ export function pluralFromKind(kind: string): string {
   switch (kind) {
     case "Ingress":
       return "ingresses";
+    case "OCIRepository":
+      return "ocirepositories";
     default:
       return kind.toLowerCase() + "s";
   }

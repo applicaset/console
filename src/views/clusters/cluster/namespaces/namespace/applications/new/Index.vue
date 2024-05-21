@@ -46,11 +46,11 @@ const methods = [
     disabled: true,
   },
   {
-    title: "From Packages",
+    title: "From Repository",
     description:
       "Run preconfigured applications like WordPress, Redis, PostgreSQL, ...",
     icon: "mdi-package",
-    disabled: true,
+    to: { name: "ApplicationsNewRepository" },
   },
   {
     title: "From Manifest",
